@@ -20,4 +20,6 @@ def buscarTiposRecursosTecnologicos(): # Funcion para buscar los tipos de recurs
     
     return tiposRT # Retorno la lista de tipos de recursos tecnologicos
 
+
+
    
