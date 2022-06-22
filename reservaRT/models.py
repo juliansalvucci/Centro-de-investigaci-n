@@ -10,6 +10,9 @@ class PersonalCientifico(models.Model):
     correoElectronicoInstitucional = models.EmailField()
     telefonoCelular = models.CharField(max_length=10)
 
+class Sesion(models.Model):
+    Usuario = models.ForeignKey('Usuario')
+
 class Usuario(models.Model):
     usuario = models.CharField(max_length=100)
     clave = models.CharField(max_length=100)
@@ -25,7 +28,22 @@ class RecursoTecnologico(models.Model):
     fechaAlta = models.DateField()
     imagenes = models.ImageField()
 
+class Estado(models.Model):
+    nombre = models.CharField()
+    descripcion = models.CharField()
+    ambito = models.CharField()
+    esReservable = models.BooleanField()
+    esCancelable = models.BooleanField()
 
+class  CambioEstadoRT(models.Model):
+    fechaHoraDesde = models.DateTimeField()
+    fechaHoraHasta = models.DateTimeField()
+
+class Modelo(models.Model):
+    nombre = models.CharField()
+
+class Marca(models.Model):
+    nombre = models.CharField()
 
 class TipoRecursoTecnologico(models.Model): # Modelo para los tipos de recursos tecnologicos
     nombre = models.CharField(max_length=50) # Campo para el nombre del tipo de recurso tecnologico
