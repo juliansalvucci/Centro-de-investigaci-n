@@ -10,13 +10,24 @@ class PersonalCientifico(models.Model):
     correoElectronicoInstitucional = models.EmailField()
     telefonoCelular = models.CharField(max_length=10)
 
+    def getDatos(self):
+        return self.legajo + self.nombre + self.apellido
+
 class Sesion(models.Model):
-    Usuario = models.ForeignKey('Usuario')
+    usuario = models.ForeignKey('Usuario')
+
+    def getUsuarioEnSesion(self):
+        return self.usuario.getCientifico()
+
 
 class Usuario(models.Model):
     usuario = models.CharField(max_length=100)
     clave = models.CharField(max_length=100)
     habilitado = models.BooleanField(default=True)
+    cientifico = models.ForeignKey('PersonalCientifico')
+
+    def getCientifico(self):
+        return self.cientifico.getDatos()
 
 class CentroInvestigacion(models.Model):
     nombre = models.CharField(max_length=20)
@@ -27,6 +38,12 @@ class RecursoTecnologico(models.Model):
     numeroRT = models.IntegerField(primary_key=True)
     fechaAlta = models.DateField()
     imagenes = models.ImageField()
+
+    def getNumeroInventario(self):
+        return self.numeroRT
+
+    
+
 
 class Estado(models.Model):
     nombre = models.CharField()
@@ -41,9 +58,19 @@ class  CambioEstadoRT(models.Model):
 
 class Modelo(models.Model):
     nombre = models.CharField()
+    marca = models.ForeignKey('Marca')
+
+    def getNombre(self):
+        return self.nombre
+    def getMarca(self):
+        self.marca.getNombre()
+
 
 class Marca(models.Model):
-    nombre = models.CharField()
+    nombre = models.CharField() 
+
+    def getNombre(self):
+        return self.nombre
 
 class TipoRecursoTecnologico(models.Model): # Modelo para los tipos de recursos tecnologicos
     nombre = models.CharField(max_length=50) # Campo para el nombre del tipo de recurso tecnologico

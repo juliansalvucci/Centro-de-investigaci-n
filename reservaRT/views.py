@@ -2,7 +2,7 @@ from django.shortcuts import render
 from reservaRT.models import TipoRecursoTecnologico
 
 
-def opcionReservaTurnoRecursoTecnologico(request): # Vista para la opcion de reserva de turno de recurso tecnologico
+def mostrarTiposRecursosTecnologicosParaSeleccion(request): # Vista para la opcion de reserva de turno de recurso tecnologico
 
     tiposRT = buscarTiposRecursosTecnologicos() # Obtengo los tipos de recursos tecnologicos
 
