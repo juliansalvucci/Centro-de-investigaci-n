@@ -67,11 +67,15 @@ class RecursoTecnologico(models.Model):
     imagenes = models.ImageField()
     tipoRecursoTecnologico = models.ForeignKey('TipoRecursoTecnologico')
     turno = models.ManyToManyField('Turno')
+    modelo = models.ForeignKey('Modelo')
     #DEPENDENCIA
     centroInvestigacion = models.ForeignKey('CentroInvestigacion')
 
     def getNumeroInventario(self):
         return self.numeroRT
+
+    def getModelo(self):
+        return self.modelo.getNombre()
 
     def esActivo(self):
         if self.fechaBaja == None:
@@ -106,6 +110,7 @@ class CambioEstadoRT(models.Model):
 #MODELO
 class Modelo(models.Model):
     nombre = models.CharField()
+    #DEPENDENCIA
     marca = models.ForeignKey('Marca')
 
     def getNombre(self):
@@ -136,7 +141,14 @@ class TipoRecursoTecnologico(models.Model):  # Modelo para los tipos de recursos
         recursos = []
 
         for recurso in self.recursoTecnologico.all():
-            recursos.append(recurso)
+
+            if(recurso.esActivo()):
+                r = {
+                    'numeroInventario': recurso.getNumeroInventario(),
+                    'modelo': recurso.getModelo(),
+                    'marca': recurso.modelo.getMarca(),
+                }
+                recursos.append(r)
 
         return recursos
 
