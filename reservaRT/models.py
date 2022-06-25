@@ -1,6 +1,7 @@
 from statistics import mode
 from django.db import models
 
+#PERSONALCIENCTÍFICO
 class PersonalCientifico(models.Model):
     legajo = models.CharField(max_length=10) 
     nombre = models.CharField(max_length=20)
@@ -13,14 +14,14 @@ class PersonalCientifico(models.Model):
     def getNombreCompleto(self):
         return self.nombre + " " + self.apellido
 
-    
+#SESIÓN
 class Sesion(models.Model):
     usuario = models.ForeignKey('Usuario')
 
     def getUsuarioEnSesion(self):
         return self.usuario.getCientifico()
 
-
+#USUARIO
 class Usuario(models.Model):
     usuario = models.CharField(max_length=100)
     clave = models.CharField(max_length=100)
@@ -30,6 +31,7 @@ class Usuario(models.Model):
     def getCientifico(self):
         return self.cientifico.objects.get(self.usuario == self.personalCientifico.getNombreCompleto()) #Suponemos que el nombre de usuario es el nombre completo del científico.
 
+#CENTROINVESTIGACIÓN
 class CentroInvestigacion(models.Model):
     nombre = models.CharField(max_length=20)
     fechaAlta = models.DateField()
@@ -48,7 +50,7 @@ class CentroInvestigacion(models.Model):
     def getCientifico(self, cientifico):
         return self.asignacionCientifico.mostrarCientificoDeCi(cientifico)
 
-
+#ASIGNACIÓNCIENTÍFICO
 class AsignacionCientifico(models.Model):
     fechaDesde = models.DateField()
     fechaHasta = models.DateField()
@@ -57,14 +59,16 @@ class AsignacionCientifico(models.Model):
     def mostrarCientificoDeCi(self, cientifico):
         return self.personalCientifico.objects.get(self.personalCientifico.getNombreCompleto() == cientifico)
 
+#RECURSOTECNOLÓGICO
 class RecursoTecnologico(models.Model):
     numeroRT = models.IntegerField(primary_key=True)
     fechaAlta = models.DateField()
     fechaBaja = models.DateField()
     imagenes = models.ImageField()
     tipoRecursoTecnologico = models.ForeignKey('TipoRecursoTecnologico')
-    centroInvestigacion = models.ForeignKey('CentroInvestigacion')
     turno = models.ManyToManyField('Turno')
+    #DEPENDENCIA
+    centroInvestigacion = models.ForeignKey('CentroInvestigacion')
 
     def getNumeroInventario(self):
         return self.numeroRT
@@ -75,15 +79,18 @@ class RecursoTecnologico(models.Model):
         else:
             return False
 
+    def getCentroInvestigacion(self):
+        return self.centroInvestigacion.getNombre()
+    '''
     def esTuTipoRt(self, tipoRT): # Funcion para saber si el recurso tecnologico es de un tipo especifico
         if self.tipoRecursoTecnologico.getNombre() == tipoRT: # Si el tipo de recurso tecnologico es el mismo que el tipoRT
             return True    # Retorno True
         else:              # Si no es el mismo tipo de recurso tecnologico
             return False   # Retorno False
 
-    
+    '''
 
-
+#ESTADO
 class Estado(models.Model):
     nombre = models.CharField()
     descripcion = models.CharField()
@@ -91,10 +98,12 @@ class Estado(models.Model):
     esReservable = models.BooleanField()
     esCancelable = models.BooleanField()
 
+#CAMBIOESTADOTIPORECURSOTECNOLÓGICO
 class CambioEstadoRT(models.Model):
     fechaHoraDesde = models.DateTimeField()
     fechaHoraHasta = models.DateTimeField()
 
+#MODELO
 class Modelo(models.Model):
     nombre = models.CharField()
     marca = models.ForeignKey('Marca')
@@ -105,7 +114,7 @@ class Modelo(models.Model):
     def getMarca(self):
         return self.marca.getNombre()
 
-
+#MARCA
 class Marca(models.Model):
     nombre = models.CharField() 
 
@@ -113,21 +122,32 @@ class Marca(models.Model):
         return self.nombre
 
 
-
+#TIPORECURSOTECNOLÓGICO
 class TipoRecursoTecnologico(models.Model):  # Modelo para los tipos de recursos tecnologicos
     nombre = models.CharField(max_length=50)   # Campo para el nombre del tipo de recurso tecnologico
     descripcion = models.CharField(max_length=100) # campo para la descripcion del tipo de recurso tecnologico
+    #DEPENDENCIA
+    recursoTecnologico = models.ManyToManyField('RecursoTecnologico') # Campo para los recursos tecnologicos que pertenecen al tipo de recurso tecnologico
 
     def getNombre(self): # Funcion para obtener el nombre del tipo de recurso tecnologico
         return self.nombre # Retorno el nombre del tipo de recurso tecnologico
 
+    def getRecursosTecnologicosDeTipo(self):
+        recursos = []
 
+        for recurso in self.recursoTecnologico.all():
+            recursos.append(recurso)
+
+        return recursos
+
+#TURNO
 class Turno(models.Model):
     fechaGeneracion = models.DateField()
     diaSemana = models.CharField(max_length=10)
     fechaHoraInicio = models.DateTimeField()
     fechaHoraFin = models.DateTimeField()
 
+#CAMBIOESTADOTURNO
 class CambioEstadoTurno(models.Model):
     fechaHoraDesde = models.DateTimeField()
     fechaHoraHasta = models.DateTimeField()
