@@ -22,4 +22,5 @@ def buscarTiposRecursosTecnologicos(): # Funcion para buscar los tipos de recurs
 
 
 
-   
+def obtenerRecursoTecnologico(request): 
+    pass
