@@ -1,3 +1,4 @@
+import datetime
 from statistics import mode
 from django.db import models
 
@@ -83,6 +84,15 @@ class RecursoTecnologico(models.Model):
         else:
             return False
 
+    def getTurnos(self):
+        turnos = []
+
+        for turno in self.turno.all():
+            if turno.esDisponible():
+                turnos.append(turno)
+                
+        return turnos
+
     def getCentroInvestigacion(self):
         return self.centroInvestigacion.getNombre()
     '''
@@ -158,6 +168,12 @@ class Turno(models.Model):
     diaSemana = models.CharField(max_length=10)
     fechaHoraInicio = models.DateTimeField()
     fechaHoraFin = models.DateTimeField()
+
+    def esDIsponible(self):
+        if self.fechaHoraInicio < datetime.now():
+            return True
+        else:
+            return False
 
 #CAMBIOESTADOTURNO
 class CambioEstadoTurno(models.Model):
