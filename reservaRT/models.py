@@ -48,6 +48,7 @@ class CentroInvestigacion(models.Model):
 
         return recursos
 
+    #En diagrama es validar cientifico, luego cambiar en diagrama.
     def getCientifico(self, cientifico):
         return self.asignacionCientifico.mostrarCientificoDeCi(cientifico)
 
@@ -78,11 +79,17 @@ class RecursoTecnologico(models.Model):
     def getModelo(self):
         return self.modelo.getNombre()
 
+    def getMarca(self):
+        return self.modelo.getMarca()
+
     def esActivo(self):
         if self.fechaBaja == None:
             return True
         else:
             return False
+
+    def validarCientifico(self, cientifico):
+        return self.centroInvestigacion.getCientifico(cientifico)
 
     def getTurnos(self):
         turnos = []
@@ -95,14 +102,14 @@ class RecursoTecnologico(models.Model):
 
     def getCentroInvestigacion(self):
         return self.centroInvestigacion.getNombre()
-    '''
+    
     def esTuTipoRt(self, tipoRT): # Funcion para saber si el recurso tecnologico es de un tipo especifico
         if self.tipoRecursoTecnologico.getNombre() == tipoRT: # Si el tipo de recurso tecnologico es el mismo que el tipoRT
             return True    # Retorno True
         else:              # Si no es el mismo tipo de recurso tecnologico
             return False   # Retorno False
 
-    '''
+    
 
 #ESTADO
 class Estado(models.Model):
@@ -147,20 +154,6 @@ class TipoRecursoTecnologico(models.Model):  # Modelo para los tipos de recursos
     def getNombre(self): # Funcion para obtener el nombre del tipo de recurso tecnologico
         return self.nombre # Retorno el nombre del tipo de recurso tecnologico
 
-    def getRecursosTecnologicosDeTipo(self):
-        recursos = []
-
-        for recurso in self.recursoTecnologico.all():
-
-            if(recurso.esActivo()):
-                r = {
-                    'numeroInventario': recurso.getNumeroInventario(),
-                    'modelo': recurso.getModelo(),
-                    'marca': recurso.modelo.getMarca(),
-                }
-                recursos.append(r)
-
-        return recursos
 
 #TURNO
 class Turno(models.Model):
@@ -168,14 +161,17 @@ class Turno(models.Model):
     diaSemana = models.CharField(max_length=10)
     fechaHoraInicio = models.DateTimeField()
     fechaHoraFin = models.DateTimeField()
+    cambioEstadoTurno = models.ForeignKey('CambioEstadoTurno')
 
-    def esDIsponible(self):
-        if self.fechaHoraInicio < datetime.now():
-            return True
-        else:
-            return False
+    def getEstado(self):
+        return self.cambioEstadoTurno.getEstado()
+
 
 #CAMBIOESTADOTURNO
 class CambioEstadoTurno(models.Model):
     fechaHoraDesde = models.DateTimeField()
     fechaHoraHasta = models.DateTimeField()
+    estado = models.ForeignKey('Estado')
+
+    def getEstado(self):
+        return self.estado.getNombre()
