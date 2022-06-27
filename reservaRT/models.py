@@ -1,4 +1,3 @@
-import datetime
 from statistics import mode
 from django.db import models
 
@@ -82,11 +81,8 @@ class RecursoTecnologico(models.Model):
     def getMarca(self):
         return self.modelo.getMarca()
 
-    def esActivo(self):
-        if self.fechaBaja == None:
-            return True
-        else:
-            return False
+    def esReservable(self):
+        return self.tipoRecursoTecnologico.getReservable()
 
     def validarCientifico(self, cientifico):
         return self.centroInvestigacion.getCientifico(cientifico)
@@ -95,8 +91,7 @@ class RecursoTecnologico(models.Model):
         turnos = []
 
         for turno in self.turno.all():
-            if turno.esDisponible():
-                turnos.append(turno)
+            turnos.append(turno)
                 
         return turnos
 
@@ -119,10 +114,16 @@ class Estado(models.Model):
     esReservable = models.BooleanField()
     esCancelable = models.BooleanField()
 
+    def esReservable(self):
+        return self.esReservable == True
+
 #CAMBIOESTADOTIPORECURSOTECNOLÓGICO
 class CambioEstadoRT(models.Model):
     fechaHoraDesde = models.DateTimeField()
     fechaHoraHasta = models.DateTimeField()
+
+    def esReservable(self):
+        return self.estado.getEsReservable()
 
 #MODELO
 class Modelo(models.Model):
@@ -175,3 +176,6 @@ class CambioEstadoTurno(models.Model):
 
     def getEstado(self):
         return self.estado.getNombre()
+    
+    def esReservable(self):
+        return self.estado.esReservable()
