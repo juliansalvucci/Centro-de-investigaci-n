@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from reservaRT.models import TipoRecursoTecnologico
+from reservaRT.models import RecursoTecnologico, Sesion, TipoRecursoTecnologico
 
 
 def mostrarTiposRecursosTecnologicosParaSeleccion(request): # Vista para la opcion de reserva de turno de recurso tecnologico
@@ -23,4 +23,27 @@ def buscarTiposRecursosTecnologicos(): # Funcion para buscar los tipos de recurs
 
 
 def obtenerRecursoTecnologico(request): 
-    pass
+    recursosTecnologicos = []
+    for recursoTecnologico in RecursoTecnologico.objects.all():
+        if recursoTecnologico.esTuTipoRt(request.POST['tipoRT']):
+            if recursoTecnologico.esReservable():
+                rt = {
+                   'numeroInventario': recursoTecnologico.getNumeroInventario(),
+                   'modelo' : recursoTecnologico.getModelo(),
+                   'marca': recursoTecnologico.getMarca(),
+                   'centroInvestigacion': recursoTecnologico.getCentroInvestigacion(),
+                }
+                
+
+    return recursosTecnologicos.append(rt)
+
+def ordenarPorCI(request):
+    recursosTecnologicosParaMostrar = request.POST['rt']
+
+    recursosTecnologicosParaMostrar.sort(key=lambda x: x['centroInvestigacion'])
+
+
+def buscarCientificoLoguead(sesion):
+    activaSesion = Sesion.objects.get(pk=sesion)
+    cientificoLoqueado = activaSesion.getCientifico()
+    return cientificoLoqueado

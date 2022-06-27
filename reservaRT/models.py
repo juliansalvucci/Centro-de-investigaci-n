@@ -69,6 +69,7 @@ class RecursoTecnologico(models.Model):
     tipoRecursoTecnologico = models.ForeignKey('TipoRecursoTecnologico')
     turno = models.ManyToManyField('Turno')
     modelo = models.ForeignKey('Modelo')
+    cambioEstadoRecursoTecnologico = models.ForeignKey('CambioEstadoRT')
     #DEPENDENCIA
     centroInvestigacion = models.ForeignKey('CentroInvestigacion')
 
@@ -82,7 +83,7 @@ class RecursoTecnologico(models.Model):
         return self.modelo.getMarca()
 
     def esReservable(self):
-        return self.tipoRecursoTecnologico.getReservable()
+        return self.cambioEstadoRecursoTecnologico.esReservable()
 
     def validarCientifico(self, cientifico):
         return self.centroInvestigacion.getCientifico(cientifico)
