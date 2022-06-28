@@ -16,7 +16,7 @@ class PersonalCientifico(models.Model):
 
 #SESIÓN
 class Sesion(models.Model):
-    usuario = models.ForeignKey('Usuario')
+    usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE)
 
     def getUsuarioEnSesion(self):
         return self.usuario.getCientifico()
@@ -26,7 +26,7 @@ class Usuario(models.Model):
     usuario = models.CharField(max_length=100)
     clave = models.CharField(max_length=100)
     habilitado = models.BooleanField(default=True)
-    personalCientifico = models.ForeignKey('PersonalCientifico')
+    personalCientifico = models.ForeignKey('PersonalCientifico', on_delete=models.CASCADE)
 
     def getCientifico(self):
         return self.cientifico.objects.get(self.usuario == self.personalCientifico.getNombreCompleto()) #Suponemos que el nombre de usuario es el nombre completo del científico.
@@ -37,7 +37,7 @@ class CentroInvestigacion(models.Model):
     fechaAlta = models.DateField()
     fechaBaja = models.DateField()
     recursoTecnologico = models.ManyToManyField('RecursoTecnologico')
-    asignacionCientifico = models.ForeignKey('AsignacionCientifico')
+    asignacionCientifico = models.ForeignKey('AsignacionCientifico', on_delete=models.CASCADE)
 
     def getRecursosTecnologicos(self):
         recursos = []
@@ -55,7 +55,7 @@ class CentroInvestigacion(models.Model):
 class AsignacionCientifico(models.Model):
     fechaDesde = models.DateField()
     fechaHasta = models.DateField()
-    personalCientifico = models.ForeignKey('PersonalCientifico')
+    personalCientifico = models.ForeignKey('PersonalCientifico', on_delete=models.CASCADE)
 
     def mostrarCientificoDeCi(self, cientifico):
         return self.personalCientifico.objects.get(self.personalCientifico.getNombreCompleto() == cientifico)
@@ -66,12 +66,12 @@ class RecursoTecnologico(models.Model):
     fechaAlta = models.DateField()
     fechaBaja = models.DateField()
     imagenes = models.ImageField()
-    tipoRecursoTecnologico = models.ForeignKey('TipoRecursoTecnologico')
+    tipoRecursoTecnologico = models.ForeignKey('TipoRecursoTecnologico', on_delete=models.CASCADE)
     turno = models.ManyToManyField('Turno')
-    modelo = models.ForeignKey('Modelo')
-    cambioEstadoRecursoTecnologico = models.ForeignKey('CambioEstadoRT')
+    modelo = models.ForeignKey('Modelo', on_delete=models.CASCADE)
+    cambioEstadoRecursoTecnologico = models.ForeignKey('CambioEstadoRT', on_delete=models.CASCADE)
     #DEPENDENCIA
-    centroInvestigacion = models.ForeignKey('CentroInvestigacion')
+    centroInvestigacion = models.ForeignKey('CentroInvestigacion', on_delete=models.CASCADE)
 
     def getNumeroInventario(self):
         return self.numeroRT
@@ -109,9 +109,9 @@ class RecursoTecnologico(models.Model):
 
 #ESTADO
 class Estado(models.Model):
-    nombre = models.CharField()
-    descripcion = models.CharField()
-    ambito = models.CharField()
+    nombre = models.CharField(max_length=20)
+    descripcion = models.CharField(max_length=100)
+    ambito = models.CharField(max_length=20)
     esReservable = models.BooleanField()
     esCancelable = models.BooleanField()
 
@@ -128,9 +128,9 @@ class CambioEstadoRT(models.Model):
 
 #MODELO
 class Modelo(models.Model):
-    nombre = models.CharField()
+    nombre = models.CharField(max_length=20)
     #DEPENDENCIA
-    marca = models.ForeignKey('Marca')
+    marca = models.ForeignKey('Marca', on_delete=models.CASCADE)
 
     def getNombre(self):
         return self.nombre
@@ -140,7 +140,7 @@ class Modelo(models.Model):
 
 #MARCA
 class Marca(models.Model):
-    nombre = models.CharField() 
+    nombre = models.CharField(max_length=20) 
 
     def getNombre(self):
         return self.nombre
@@ -163,7 +163,7 @@ class Turno(models.Model):
     diaSemana = models.CharField(max_length=10)
     fechaHoraInicio = models.DateTimeField()
     fechaHoraFin = models.DateTimeField()
-    cambioEstadoTurno = models.ForeignKey('CambioEstadoTurno')
+    cambioEstadoTurno = models.ForeignKey('CambioEstadoTurno', on_delete=models.CASCADE)
 
     def getEstado(self):
         return self.cambioEstadoTurno.getEstado()
@@ -173,7 +173,7 @@ class Turno(models.Model):
 class CambioEstadoTurno(models.Model):
     fechaHoraDesde = models.DateTimeField()
     fechaHoraHasta = models.DateTimeField()
-    estado = models.ForeignKey('Estado')
+    estado = models.ForeignKey('Estado', on_delete=models.CASCADE)
 
     def getEstado(self):
         return self.estado.getNombre()
