@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render
 from reservaRT.models import RecursoTecnologico, Sesion, TipoRecursoTecnologico
 
@@ -47,3 +48,20 @@ def buscarCientificoLoguead(sesion):
     activaSesion = Sesion.objects.get(pk=sesion)
     cientificoLoqueado = activaSesion.getCientifico()
     return cientificoLoqueado
+
+def validarCientifico(request):
+    cientificoLogueado = request.POST['cientificoLogueado']
+
+def tomarSeleccionRecursoTecnologico(request):
+    recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
+
+    context = {
+        'recursoTecnologicoSeleccionado': recursoTecnologicoSeleccionado,
+    }
+
+
+def getTurnosDeRecursoTecnologico(recursoTecnologicoSeeccionado):
+    pass
+
+def getFechaHoraActual():
+    return datetime.now()
