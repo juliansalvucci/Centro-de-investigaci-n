@@ -3,3 +3,4 @@ from reservaRT.models import *
 
 admin.site.register(TipoRecursoTecnologico) # Registro el modelo TipoRecursoTecnologico
 admin.site.register(Usuario)
+admin.site.register(RecursoTecnologico)

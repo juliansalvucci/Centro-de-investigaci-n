@@ -65,6 +65,13 @@ def ordenarPorCI(request):
 
     recursosTecnologicosParaMostrar.sort(key=lambda x: x['centroInvestigacion'])
 
+def tomarSeleccionRecursoTecnologico(request):
+    recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
+
+    context = {
+        'recursoTecnologicoSeleccionado': recursoTecnologicoSeleccionado,
+    }
+
 
 def buscarCientificoLoguead(sesion):
     activaSesion = Sesion.objects.get(pk=sesion)
@@ -74,12 +81,6 @@ def buscarCientificoLoguead(sesion):
 def validarCientifico(request):
     cientificoLogueado = request.POST['cientificoLogueado']
 
-def tomarSeleccionRecursoTecnologico(request):
-    recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
-
-    context = {
-        'recursoTecnologicoSeleccionado': recursoTecnologicoSeleccionado,
-    }
 
 
 def getTurnosDeRecursoTecnologico(recursoTecnologicoSeeccionado):

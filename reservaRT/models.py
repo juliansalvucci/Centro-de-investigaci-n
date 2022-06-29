@@ -26,7 +26,7 @@ class Usuario(models.Model):
     usuario = models.CharField(max_length=100)
     clave = models.CharField(max_length=100)
     habilitado = models.BooleanField(default=True)
-    personalCientifico = models.ForeignKey('PersonalCientifico', on_delete=models.CASCADE)
+    PunteroPersonalCientifico = models.ForeignKey("PersonalCientifico", on_delete=models.CASCADE, blank=True ,null=True)
 
     def getCientifico(self):
         return self.cientifico.objects.get(self.usuario == self.personalCientifico.getNombreCompleto()) #Suponemos que el nombre de usuario es el nombre completo del científico.
