@@ -24,8 +24,14 @@ def buscarTiposRecursosTecnologicos(): # Funcion para buscar los tipos de recurs
 def tomarSeleccionTipoRecursoTecnologico(request):
     tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
 
+    aux = obtenerRecursosTecnologico(tipoRecursoTecnologicoSeleccionado)
+
+    print(aux)
+    
     context = {
         'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
+        'recursosTecnologicos' : aux,
+
     }
 
     return render(request, 'Paso2.html', context)
@@ -35,8 +41,6 @@ def getRecursos(request):
     tipoRT = TipoRecursoTecnologico.objects.get(nombre = tipoRecursoTecnologicoSeleccionado)
 
     recursosTecnologicos = obtenerRecursosTecnologico(tipoRT)
-
-    print(recursosTecnologicos)
 
     context = {
         'recursosTecnologicos': recursosTecnologicos
@@ -56,9 +60,9 @@ def obtenerRecursosTecnologico(tipoRT):
                    'marca': recursoTecnologico.getMarca(),
                    'centroInvestigacion': recursoTecnologico.getCentroInvestigacion(),
                 }
-                
+                recursosTecnologicos.append(rt)
 
-    return recursosTecnologicos.append(rt)
+    return recursosTecnologicos
 
 def ordenarPorCI(request):
     recursosTecnologicosParaMostrar = request.POST['rt']

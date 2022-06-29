@@ -3,9 +3,9 @@ from django.db import models
 
 #PERSONALCIENCTÍFICO
 class PersonalCientifico(models.Model):
-    legajo = models.CharField(max_length=10) 
-    nombre = models.CharField(max_length=20)
-    apellido = models.CharField(max_length=20)
+    legajo = models.CharField(max_length=10, blank=True, null=True) 
+    nombre = models.CharField(max_length=20 , blank=True, null=True)
+    apellido = models.CharField(max_length=20 , blank=True, null=True)
     numeroDocumento = models.CharField(max_length=8)
     correoElectronicoPersonal = models.EmailField()
     correoElectronicoInstitucional = models.EmailField()
@@ -35,9 +35,12 @@ class Usuario(models.Model):
 class CentroInvestigacion(models.Model):
     nombre = models.CharField(max_length=20)
     fechaAlta = models.DateField()
-    fechaBaja = models.DateField()
+    fechaBaja = models.DateField(blank=True, null=True)
     recursoTecnologico = models.ManyToManyField('RecursoTecnologico')
-    asignacionCientifico = models.ForeignKey('AsignacionCientifico', on_delete=models.CASCADE)
+    asignacionCientifico = models.ForeignKey('AsignacionCientifico', on_delete=models.CASCADE, blank=True, null=True)
+
+    def getNombre(self):
+        return self.nombre
 
     def getRecursosTecnologicos(self):
         recursos = []
@@ -64,14 +67,14 @@ class AsignacionCientifico(models.Model):
 class RecursoTecnologico(models.Model):
     numeroRT = models.IntegerField(primary_key=True)
     fechaAlta = models.DateField()
-    fechaBaja = models.DateField()
-    imagenes = models.ImageField()
-    tipoRecursoTecnologico = models.ForeignKey('TipoRecursoTecnologico', on_delete=models.CASCADE)
-    turno = models.ManyToManyField('Turno')
-    modelo = models.ForeignKey('Modelo', on_delete=models.CASCADE)
-    cambioEstadoRecursoTecnologico = models.ForeignKey('CambioEstadoRT', on_delete=models.CASCADE)
+    fechaBaja = models.DateField(blank=True, null=True)
+    imagenes = models.ImageField(blank=True, null=True)
+    tipoRecursoTecnologico = models.ForeignKey("TipoRecursoTecnologico", on_delete=models.CASCADE, blank=True, null=True)
+    turno = models.ManyToManyField('Turno', blank=True, null=True)
+    modelo = models.ForeignKey('Modelo', on_delete=models.CASCADE, blank=True, null=True)
+    cambioEstadoRecursoTecnologico = models.ForeignKey('CambioEstadoRT', on_delete=models.CASCADE, blank=True, null=True)
     #DEPENDENCIA
-    centroInvestigacion = models.ForeignKey('CentroInvestigacion', on_delete=models.CASCADE)
+    centroInvestigacion = models.ForeignKey("CentroInvestigacion", on_delete=models.CASCADE, blank=True, null=True)
 
     def getNumeroInventario(self):
         return self.numeroRT
@@ -83,7 +86,8 @@ class RecursoTecnologico(models.Model):
         return self.modelo.getMarca()
 
     def esReservable(self):
-        return self.cambioEstadoRecursoTecnologico.esReservable()
+        return True
+        #return self.cambioEstadoRecursoTecnologico.esReservable()
 
     def validarCientifico(self, cientifico):
         return self.centroInvestigacion.getCientifico(cientifico)
@@ -100,6 +104,7 @@ class RecursoTecnologico(models.Model):
         return self.centroInvestigacion.getNombre()
     
     def esTuTipoRt(self, tipoRT): # Funcion para saber si el recurso tecnologico es de un tipo especifico
+        print(self.tipoRecursoTecnologico.getNombre())
         if self.tipoRecursoTecnologico.getNombre() == tipoRT: # Si el tipo de recurso tecnologico es el mismo que el tipoRT
             return True    # Retorno True
         else:              # Si no es el mismo tipo de recurso tecnologico
@@ -140,7 +145,7 @@ class Modelo(models.Model):
 
 #MARCA
 class Marca(models.Model):
-    nombre = models.CharField(max_length=20) 
+    nombre = models.CharField(max_length=10) 
 
     def getNombre(self):
         return self.nombre
@@ -151,7 +156,7 @@ class TipoRecursoTecnologico(models.Model):  # Modelo para los tipos de recursos
     nombre = models.CharField(max_length=50)   # Campo para el nombre del tipo de recurso tecnologico
     descripcion = models.CharField(max_length=100) # campo para la descripcion del tipo de recurso tecnologico
     #DEPENDENCIA
-    recursoTecnologico = models.ManyToManyField('RecursoTecnologico') # Campo para los recursos tecnologicos que pertenecen al tipo de recurso tecnologico
+    recursoTecnologico = models.ManyToManyField('RecursoTecnologico', blank=True, null=True) # Campo para los recursos tecnologicos que pertenecen al tipo de recurso tecnologico
 
     def getNombre(self): # Funcion para obtener el nombre del tipo de recurso tecnologico
         return self.nombre # Retorno el nombre del tipo de recurso tecnologico
