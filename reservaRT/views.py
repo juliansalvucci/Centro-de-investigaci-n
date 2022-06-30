@@ -1,4 +1,5 @@
 import datetime
+from multiprocessing import context
 from django.shortcuts import render
 from reservaRT.models import RecursoTecnologico, Sesion, TipoRecursoTecnologico
 
@@ -21,33 +22,17 @@ def buscarTiposRecursosTecnologicos(): # Funcion para buscar los tipos de recurs
     
     return tiposRecursosTecnologicos # Retorno la lista de tipos de recursos tecnologicos
 
+
 def tomarSeleccionTipoRecursoTecnologico(request):
     tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
+    recursosTecnologicos = obtenerRecursosTecnologico(tipoRecursoTecnologicoSeleccionado)
 
-    aux = obtenerRecursosTecnologico(tipoRecursoTecnologicoSeleccionado)
-
-    print(aux)
-    
     context = {
         'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
-        'recursosTecnologicos' : aux,
-
+        'recursosTecnologicos' : recursosTecnologicos,
     }
 
     return render(request, 'Paso2.html', context)
-
-def getRecursos(request):
-    tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
-    tipoRT = TipoRecursoTecnologico.objects.get(nombre = tipoRecursoTecnologicoSeleccionado)
-
-    recursosTecnologicos = obtenerRecursosTecnologico(tipoRT)
-
-    context = {
-        'recursosTecnologicos': recursosTecnologicos
-    }
-
-    return render(request, 'Paso3.html', context)
-
 
 def obtenerRecursosTecnologico(tipoRT): 
     recursosTecnologicos = []
@@ -69,21 +54,31 @@ def ordenarPorCI(request):
 
     recursosTecnologicosParaMostrar.sort(key=lambda x: x['centroInvestigacion'])
 
+
 def tomarSeleccionRecursoTecnologico(request):
     recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
+    cientificoLogueado = buscarCientificoLogueado(1)
+
+    print(cientificoLogueado)
 
     context = {
         'recursoTecnologicoSeleccionado': recursoTecnologicoSeleccionado,
+        'cientificoLogueado': cientificoLogueado,
     }
 
+    return render(request, 'Paso3.html', context)
 
-def buscarCientificoLoguead(sesion):
+def buscarCientificoLogueado(sesion):
     activaSesion = Sesion.objects.get(pk=sesion)
-    cientificoLoqueado = activaSesion.getCientifico()
+    cientificoLoqueado = activaSesion.getUsuarioEnSesion()
     return cientificoLoqueado
 
-def validarCientifico(request):
+def validarCientificoDeRecursoTecnologico(request):
     cientificoLogueado = request.POST['cientificoLogueado']
+    recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
+
+    recursoTecnologicoSeleccionado.validarCientifico(cientificoLogueado)
+    
 
 
 

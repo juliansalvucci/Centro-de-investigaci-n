@@ -6,13 +6,13 @@ class PersonalCientifico(models.Model):
     legajo = models.CharField(max_length=10, blank=True, null=True) 
     nombre = models.CharField(max_length=20 , blank=True, null=True)
     apellido = models.CharField(max_length=20 , blank=True, null=True)
-    numeroDocumento = models.CharField(max_length=8)
-    correoElectronicoPersonal = models.EmailField()
-    correoElectronicoInstitucional = models.EmailField()
-    telefonoCelular = models.CharField(max_length=10)
+    numeroDocumento = models.CharField(max_length=8,blank=True, null=True)
+    correoElectronicoPersonal = models.EmailField(blank=True, null=True)
+    correoElectronicoInstitucional = models.EmailField(blank=True, null=True)
+    telefonoCelular = models.CharField(max_length=10,blank=True, null=True)
 
-    def getNombreCompleto(self):
-        return self.nombre + " " + self.apellido
+    def getLegajo(self):
+        return self.legajo
 
 #SESIÓN
 class Sesion(models.Model):
@@ -29,7 +29,7 @@ class Usuario(models.Model):
     PunteroPersonalCientifico = models.ForeignKey("PersonalCientifico", on_delete=models.CASCADE, blank=True ,null=True)
 
     def getCientifico(self):
-        return self.cientifico.objects.get(self.usuario == self.personalCientifico.getNombreCompleto()) #Suponemos que el nombre de usuario es el nombre completo del científico.
+        return self.PunteroPersonalCientifico.getLegajo()
 
 #CENTROINVESTIGACIÓN
 class CentroInvestigacion(models.Model):
@@ -57,11 +57,14 @@ class CentroInvestigacion(models.Model):
 #ASIGNACIÓNCIENTÍFICO
 class AsignacionCientifico(models.Model):
     fechaDesde = models.DateField()
-    fechaHasta = models.DateField()
-    personalCientifico = models.ForeignKey('PersonalCientifico', on_delete=models.CASCADE)
+    fechaHasta = models.DateField(blank=True, null=True)
+    personalCientifico = models.ForeignKey("PersonalCientifico", on_delete=models.CASCADE)
 
     def mostrarCientificoDeCi(self, cientifico):
-        return self.personalCientifico.objects.get(self.personalCientifico.getNombreCompleto() == cientifico)
+       if self.personalCientifico.objects.get(self.personalCientifico.getLegajo() == cientifico):
+           return True
+       else:
+           return False
 
 #RECURSOTECNOLÓGICO
 class RecursoTecnologico(models.Model):

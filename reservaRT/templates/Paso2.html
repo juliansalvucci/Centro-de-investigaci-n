@@ -6,10 +6,10 @@
         <form action="../tomarSeleccionRecursoTecnologico/" method="POST">
             {% csrf_token %}
 
-            <label for="recursoTecnologicoSeleccionado" class="label-readonly mt-2">Tipo:</label>
+            <label for="recursoTecnologicoSeleccionado" class="label-readonly mt-2">Recurso:</label>
             <select name="recursoTecnologicoSeleccionado" class="form-select mt-1 mb-4" required>
                 {% for recursoTecnologico in recursosTecnologicos %}
-                <option value="{{recursoTecnologico.modelo}}">{{recursoTecnologico.modelo}}</option>
+                <option value="{{recursoTecnologico.modelo}}">{{recursoTecnologico.numeroInventario}} - {{recursoTecnologico.modelo}} - {{recursoTecnologico.marca}} - {{centroInvestigacion}}</option>
                 {% endfor %}
             </select>
         
