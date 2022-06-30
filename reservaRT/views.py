@@ -63,7 +63,7 @@ def tomarSeleccionRecursoTecnologico(request):
     aux = rtSeleccionado.validarCientifico(cientificoLogueado)
 
     print(cientificoLogueado)
-    print(aux, "PUTO")
+    print(aux, "PerteneceACI")
 
     context = {
         'recursoTecnologicoSeleccionado': recursoTecnologicoSeleccionado,
