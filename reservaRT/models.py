@@ -3,20 +3,20 @@ from django.db import models
 
 #PERSONALCIENCTÍFICO
 class PersonalCientifico(models.Model):
-    legajo = models.CharField(max_length=10) 
-    nombre = models.CharField(max_length=20)
-    apellido = models.CharField(max_length=20)
-    numeroDocumento = models.CharField(max_length=8)
-    correoElectronicoPersonal = models.EmailField()
-    correoElectronicoInstitucional = models.EmailField()
-    telefonoCelular = models.CharField(max_length=10)
+    legajo = models.CharField(max_length=10, blank=True, null=True) 
+    nombre = models.CharField(max_length=20 , blank=True, null=True)
+    apellido = models.CharField(max_length=20 , blank=True, null=True)
+    numeroDocumento = models.CharField(max_length=8,blank=True, null=True)
+    correoElectronicoPersonal = models.EmailField(blank=True, null=True)
+    correoElectronicoInstitucional = models.EmailField(blank=True, null=True)
+    telefonoCelular = models.CharField(max_length=10,blank=True, null=True)
 
-    def getNombreCompleto(self):
-        return self.nombre + " " + self.apellido
+    def getLegajo(self):
+        return self.legajo
 
 #SESIÓN
 class Sesion(models.Model):
-    usuario = models.ForeignKey('Usuario')
+    usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE)
 
     def getUsuarioEnSesion(self):
         return self.usuario.getCientifico()
@@ -26,18 +26,21 @@ class Usuario(models.Model):
     usuario = models.CharField(max_length=100)
     clave = models.CharField(max_length=100)
     habilitado = models.BooleanField(default=True)
-    personalCientifico = models.ForeignKey('PersonalCientifico')
+    PunteroPersonalCientifico = models.ForeignKey("PersonalCientifico", on_delete=models.CASCADE, blank=True ,null=True)
 
     def getCientifico(self):
-        return self.cientifico.objects.get(self.usuario == self.personalCientifico.getNombreCompleto()) #Suponemos que el nombre de usuario es el nombre completo del científico.
+        return self.PunteroPersonalCientifico.getLegajo()
 
 #CENTROINVESTIGACIÓN
 class CentroInvestigacion(models.Model):
     nombre = models.CharField(max_length=20)
     fechaAlta = models.DateField()
-    fechaBaja = models.DateField()
+    fechaBaja = models.DateField(blank=True, null=True)
     recursoTecnologico = models.ManyToManyField('RecursoTecnologico')
-    asignacionCientifico = models.ForeignKey('AsignacionCientifico')
+    asignacionCientifico = models.ForeignKey('AsignacionCientifico', on_delete=models.CASCADE, blank=True, null=True)
+
+    def getNombre(self):
+        return self.nombre
 
     def getRecursosTecnologicos(self):
         recursos = []
@@ -54,24 +57,27 @@ class CentroInvestigacion(models.Model):
 #ASIGNACIÓNCIENTÍFICO
 class AsignacionCientifico(models.Model):
     fechaDesde = models.DateField()
-    fechaHasta = models.DateField()
-    personalCientifico = models.ForeignKey('PersonalCientifico')
+    fechaHasta = models.DateField(blank=True, null=True)
+    personalCientifico = models.ForeignKey("PersonalCientifico", on_delete=models.CASCADE)
 
     def mostrarCientificoDeCi(self, cientifico):
-        return self.personalCientifico.objects.get(self.personalCientifico.getNombreCompleto() == cientifico)
+       if self.personalCientifico.objects.get(self.personalCientifico.getLegajo() == cientifico):
+           return True
+       else:
+           return False
 
 #RECURSOTECNOLÓGICO
 class RecursoTecnologico(models.Model):
     numeroRT = models.IntegerField(primary_key=True)
     fechaAlta = models.DateField()
-    fechaBaja = models.DateField()
-    imagenes = models.ImageField()
-    tipoRecursoTecnologico = models.ForeignKey('TipoRecursoTecnologico')
-    turno = models.ManyToManyField('Turno')
-    modelo = models.ForeignKey('Modelo')
-    cambioEstadoRecursoTecnologico = models.ForeignKey('CambioEstadoRT')
+    fechaBaja = models.DateField(blank=True, null=True)
+    imagenes = models.ImageField(blank=True, null=True)
+    tipoRecursoTecnologico = models.ForeignKey("TipoRecursoTecnologico", on_delete=models.CASCADE, blank=True, null=True)
+    turno = models.ManyToManyField('Turno', blank=True, null=True)
+    modelo = models.ForeignKey('Modelo', on_delete=models.CASCADE, blank=True, null=True)
+    cambioEstadoRecursoTecnologico = models.ForeignKey('CambioEstadoRT', on_delete=models.CASCADE, blank=True, null=True)
     #DEPENDENCIA
-    centroInvestigacion = models.ForeignKey('CentroInvestigacion')
+    centroInvestigacion = models.ForeignKey("CentroInvestigacion", on_delete=models.CASCADE, blank=True, null=True)
 
     def getNumeroInventario(self):
         return self.numeroRT
@@ -83,7 +89,8 @@ class RecursoTecnologico(models.Model):
         return self.modelo.getMarca()
 
     def esReservable(self):
-        return self.cambioEstadoRecursoTecnologico.esReservable()
+        return True
+        #return self.cambioEstadoRecursoTecnologico.esReservable()
 
     def validarCientifico(self, cientifico):
         return self.centroInvestigacion.getCientifico(cientifico)
@@ -100,6 +107,7 @@ class RecursoTecnologico(models.Model):
         return self.centroInvestigacion.getNombre()
     
     def esTuTipoRt(self, tipoRT): # Funcion para saber si el recurso tecnologico es de un tipo especifico
+        print(self.tipoRecursoTecnologico.getNombre())
         if self.tipoRecursoTecnologico.getNombre() == tipoRT: # Si el tipo de recurso tecnologico es el mismo que el tipoRT
             return True    # Retorno True
         else:              # Si no es el mismo tipo de recurso tecnologico
@@ -109,9 +117,9 @@ class RecursoTecnologico(models.Model):
 
 #ESTADO
 class Estado(models.Model):
-    nombre = models.CharField()
-    descripcion = models.CharField()
-    ambito = models.CharField()
+    nombre = models.CharField(max_length=20)
+    descripcion = models.CharField(max_length=100)
+    ambito = models.CharField(max_length=20)
     esReservable = models.BooleanField()
     esCancelable = models.BooleanField()
 
@@ -128,9 +136,9 @@ class CambioEstadoRT(models.Model):
 
 #MODELO
 class Modelo(models.Model):
-    nombre = models.CharField()
+    nombre = models.CharField(max_length=20)
     #DEPENDENCIA
-    marca = models.ForeignKey('Marca')
+    marca = models.ForeignKey('Marca', on_delete=models.CASCADE)
 
     def getNombre(self):
         return self.nombre
@@ -140,7 +148,7 @@ class Modelo(models.Model):
 
 #MARCA
 class Marca(models.Model):
-    nombre = models.CharField() 
+    nombre = models.CharField(max_length=10) 
 
     def getNombre(self):
         return self.nombre
@@ -151,7 +159,7 @@ class TipoRecursoTecnologico(models.Model):  # Modelo para los tipos de recursos
     nombre = models.CharField(max_length=50)   # Campo para el nombre del tipo de recurso tecnologico
     descripcion = models.CharField(max_length=100) # campo para la descripcion del tipo de recurso tecnologico
     #DEPENDENCIA
-    recursoTecnologico = models.ManyToManyField('RecursoTecnologico') # Campo para los recursos tecnologicos que pertenecen al tipo de recurso tecnologico
+    recursoTecnologico = models.ManyToManyField('RecursoTecnologico', blank=True, null=True) # Campo para los recursos tecnologicos que pertenecen al tipo de recurso tecnologico
 
     def getNombre(self): # Funcion para obtener el nombre del tipo de recurso tecnologico
         return self.nombre # Retorno el nombre del tipo de recurso tecnologico
@@ -163,7 +171,7 @@ class Turno(models.Model):
     diaSemana = models.CharField(max_length=10)
     fechaHoraInicio = models.DateTimeField()
     fechaHoraFin = models.DateTimeField()
-    cambioEstadoTurno = models.ForeignKey('CambioEstadoTurno')
+    cambioEstadoTurno = models.ForeignKey('CambioEstadoTurno', on_delete=models.CASCADE)
 
     def getEstado(self):
         return self.cambioEstadoTurno.getEstado()
@@ -173,7 +181,7 @@ class Turno(models.Model):
 class CambioEstadoTurno(models.Model):
     fechaHoraDesde = models.DateTimeField()
     fechaHoraHasta = models.DateTimeField()
-    estado = models.ForeignKey('Estado')
+    estado = models.ForeignKey('Estado', on_delete=models.CASCADE)
 
     def getEstado(self):
         return self.estado.getNombre()

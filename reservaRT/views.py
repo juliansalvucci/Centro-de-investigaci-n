@@ -1,32 +1,43 @@
 import datetime
+from multiprocessing import context
 from django.shortcuts import render
 from reservaRT.models import RecursoTecnologico, Sesion, TipoRecursoTecnologico
 
 
 def mostrarTiposRecursosTecnologicosParaSeleccion(request): # Vista para la opcion de reserva de turno de recurso tecnologico
 
-    tiposRT = buscarTiposRecursosTecnologicos() # Obtengo los tipos de recursos tecnologicos
+    tiposRecursosTecnologicos = buscarTiposRecursosTecnologicos() # Obtengo los tipos de recursos tecnologicos
 
     context = { # Creo el contexto
-        'tiposRT': tiposRT, # Agrego los tipos de recursos tecnologicos
+        'tiposRecursosTecnologicos': tiposRecursosTecnologicos, # Agrego los tipos de recursos tecnologicos
     }
 
-    return render(request, 'index.html', context) # Renderizo la pagina
+    return render(request, 'Paso1.html', context) # Renderizo la pagina
 
 
 def buscarTiposRecursosTecnologicos(): # Funcion para buscar los tipos de recursos tecnologicos
-    tiposRT = [] # Creo una lista para los tipos de recursos tecnologicos
+    tiposRecursosTecnologicos = [] # Creo una lista para los tipos de recursos tecnologicos
     for tipos in TipoRecursoTecnologico.objects.all(): # Recorro todos los tipos de recursos tecnologicos
-        tiposRT.append(tipos.getNombre()) # Agrego el nombre del tipo de recurso tecnologico a la lista
+        tiposRecursosTecnologicos.append(tipos.getNombre()) # Agrego el nombre del tipo de recurso tecnologico a la lista
     
-    return tiposRT # Retorno la lista de tipos de recursos tecnologicos
+    return tiposRecursosTecnologicos # Retorno la lista de tipos de recursos tecnologicos
 
 
+def tomarSeleccionTipoRecursoTecnologico(request):
+    tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
+    recursosTecnologicos = obtenerRecursosTecnologico(tipoRecursoTecnologicoSeleccionado)
 
-def obtenerRecursoTecnologico(request): 
+    context = {
+        'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
+        'recursosTecnologicos' : recursosTecnologicos,
+    }
+
+    return render(request, 'Paso2.html', context)
+
+def obtenerRecursosTecnologico(tipoRT): 
     recursosTecnologicos = []
     for recursoTecnologico in RecursoTecnologico.objects.all():
-        if recursoTecnologico.esTuTipoRt(request.POST['tipoRT']):
+        if recursoTecnologico.esTuTipoRt(tipoRT):
             if recursoTecnologico.esReservable():
                 rt = {
                    'numeroInventario': recursoTecnologico.getNumeroInventario(),
@@ -34,9 +45,9 @@ def obtenerRecursoTecnologico(request):
                    'marca': recursoTecnologico.getMarca(),
                    'centroInvestigacion': recursoTecnologico.getCentroInvestigacion(),
                 }
-                
+                recursosTecnologicos.append(rt)
 
-    return recursosTecnologicos.append(rt)
+    return recursosTecnologicos
 
 def ordenarPorCI(request):
     recursosTecnologicosParaMostrar = request.POST['rt']
@@ -44,24 +55,42 @@ def ordenarPorCI(request):
     recursosTecnologicosParaMostrar.sort(key=lambda x: x['centroInvestigacion'])
 
 
-def buscarCientificoLoguead(sesion):
-    activaSesion = Sesion.objects.get(pk=sesion)
-    cientificoLoqueado = activaSesion.getCientifico()
-    return cientificoLoqueado
-
-def validarCientifico(request):
-    cientificoLogueado = request.POST['cientificoLogueado']
-
 def tomarSeleccionRecursoTecnologico(request):
     recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
+    cientificoLogueado = buscarCientificoLogueado(1)
+
+    print(cientificoLogueado)
 
     context = {
         'recursoTecnologicoSeleccionado': recursoTecnologicoSeleccionado,
+        'cientificoLogueado': cientificoLogueado,
     }
+
+    return render(request, 'Paso3.html', context)
+
+def buscarCientificoLogueado(sesion):
+    activaSesion = Sesion.objects.get(pk=sesion)
+    cientificoLoqueado = activaSesion.getUsuarioEnSesion()
+    return cientificoLoqueado
+
+def validarCientificoDeRecursoTecnologico(request):
+    cientificoLogueado = request.POST['cientificoLogueado']
+    recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
+
+    recursoTecnologicoSeleccionado.validarCientifico(cientificoLogueado)
+    
+
 
 
 def getTurnosDeRecursoTecnologico(recursoTecnologicoSeeccionado):
-    pass
+    turnos = recursoTecnologicoSeeccionado.getTurnos()
+    turnosParaSeleccion = []
+    for turno in turnos:
+        turno.getEstado()
+       
+    return turnosParaSeleccion.append(turno)
+    
+
 
 def getFechaHoraActual():
     return datetime.now()
