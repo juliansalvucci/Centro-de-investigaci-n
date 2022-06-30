@@ -58,13 +58,15 @@ class CentroInvestigacion(models.Model):
 class AsignacionCientifico(models.Model):
     fechaDesde = models.DateField()
     fechaHasta = models.DateField(blank=True, null=True)
-    personalCientifico = models.ForeignKey("PersonalCientifico", on_delete=models.CASCADE)
+    personalCientifico = models.ManyToManyField("PersonalCientifico")
 
     def mostrarCientificoDeCi(self, cientifico):
-       if self.personalCientifico.objects.get(self.personalCientifico.getLegajo() == cientifico):
-           return True
-       else:
-           return False
+        if self.personalCientifico.filter(legajo=cientifico):
+            return True
+        else:
+            return False
+        
+       
 
 #RECURSOTECNOLÓGICO
 class RecursoTecnologico(models.Model):

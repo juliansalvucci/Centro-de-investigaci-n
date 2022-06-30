@@ -57,9 +57,13 @@ def ordenarPorCI(request):
 
 def tomarSeleccionRecursoTecnologico(request):
     recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
+    rtSeleccionado = RecursoTecnologico.objects.get(numeroRT=recursoTecnologicoSeleccionado)
     cientificoLogueado = buscarCientificoLogueado(1)
 
+    aux = rtSeleccionado.validarCientifico(cientificoLogueado)
+
     print(cientificoLogueado)
+    print(aux, "PUTO")
 
     context = {
         'recursoTecnologicoSeleccionado': recursoTecnologicoSeleccionado,
