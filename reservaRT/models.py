@@ -142,6 +142,13 @@ class CambioEstadoRT(models.Model):
     def esReservable(self):
         return self.estado.getEsReservable()
 
+    def setEstado(self, estado):
+        self.estado = estado
+
+    def new(self, estado, fechaHoraActual):
+        self.fechaHoraDesde = fechaHoraActual
+        self.setEstado(estado)
+
 #MODELO
 class Modelo(models.Model):
     nombre = models.CharField(max_length=20)

@@ -8,4 +8,5 @@ urlpatterns = [
     path('tomarSeleccionTipoRecursoTecnologico/', views.tomarSeleccionTipoRecursoTecnologico), # Vista para la opcion de reserva de turno de recurso tecnologico
     path('tomarSeleccionRecursoTecnologico/', views.tomarSeleccionRecursoTecnologico), # Vista para la opcion de reserva de turno de recurso tecnologico
     path('mostrarTurnosDeRecursoTecnologico/',views.mostrarTurnosDeRecursoTecnologico),
+    path('tomarSeleccionTurno/', views.tomarSeleccionTurno),
 ]

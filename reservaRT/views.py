@@ -64,6 +64,7 @@ def tomarSeleccionRecursoTecnologico(request):
 
     aux = rtSeleccionado.validarCientifico(cientificoLogueado)
 
+   
     print(cientificoLogueado)
     print(aux, "PerteneceACI")
 
@@ -130,10 +131,10 @@ def getFechaHoraActual():
     return datetime.now()
 
 def buscarEstadoReservado():
-    estados = Estado.object.all()
-    for estado in estados:
+    for estado in Estado.object.all():
         if estado.esAmbitoTurno():
-            pass
+            if estado.getNombre() == "Reservado":
+                return estado
 
 
 
