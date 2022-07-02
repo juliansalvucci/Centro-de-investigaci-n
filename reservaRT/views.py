@@ -1,7 +1,7 @@
 import datetime
 from multiprocessing import context
 from django.shortcuts import render
-from reservaRT.models import RecursoTecnologico, Sesion, TipoRecursoTecnologico
+from reservaRT.models import Estado, RecursoTecnologico, Sesion, TipoRecursoTecnologico
 
 
 def mostrarTiposRecursosTecnologicosParaSeleccion(request): # Vista para la opcion de reserva de turno de recurso tecnologico
@@ -128,3 +128,12 @@ def tomarSeleccionTurno(request):
 
 def getFechaHoraActual():
     return datetime.now()
+
+def buscarEstadoReservado():
+    estados = Estado.object.all()
+    for estado in estados:
+        if estado.esAmbitoTurno():
+            pass
+
+
+

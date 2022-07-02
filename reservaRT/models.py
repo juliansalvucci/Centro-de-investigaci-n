@@ -124,6 +124,10 @@ class Estado(models.Model):
     esReservable = models.BooleanField()
     esCancelable = models.BooleanField()
 
+    def esAmbitoTurno(self):
+        if self.ambito == "Turno":
+           return True
+
     def getNombre(self):
         return self.nombre
 
