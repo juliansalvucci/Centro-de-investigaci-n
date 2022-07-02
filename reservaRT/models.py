@@ -99,7 +99,6 @@ class RecursoTecnologico(models.Model):
 
     def getTurnos(self):
         turnos = []
-
         for turno in self.turno.all():
             turnos.append(turno)
                 
@@ -124,6 +123,9 @@ class Estado(models.Model):
     ambito = models.CharField(max_length=20)
     esReservable = models.BooleanField()
     esCancelable = models.BooleanField()
+
+    def getNombre(self):
+        return self.nombre
 
     def esReservable(self):
         return self.esReservable == True
@@ -173,15 +175,16 @@ class Turno(models.Model):
     diaSemana = models.CharField(max_length=10)
     fechaHoraInicio = models.DateTimeField()
     fechaHoraFin = models.DateTimeField()
-    cambioEstadoTurno = models.ForeignKey('CambioEstadoTurno', on_delete=models.CASCADE)
+    cambioEstadoTurno = models.ForeignKey('CambioEstadoTurno', on_delete=models.CASCADE, blank=True, null=True)
 
     def getEstado(self):
+        estado = self.cambioEstadoTurno.getEstado()
         turno = {
             'fechaGeneracion': self.fechaGeneracion,
             'diaSemana': self.diaSemana,
             'fechaHoraInicio': self.fechaHoraInicio,
             'fechaHoraFin': self.fechaHoraFin,
-            'estado': self.cambioEstadoTurno.getEstado()
+            'cambioEstadoTurno': estado
         }
         return turno
 
@@ -189,8 +192,8 @@ class Turno(models.Model):
 #CAMBIOESTADOTURNO
 class CambioEstadoTurno(models.Model):
     fechaHoraDesde = models.DateTimeField()
-    fechaHoraHasta = models.DateTimeField()
-    estado = models.ForeignKey('Estado', on_delete=models.CASCADE)
+    fechaHoraHasta = models.DateTimeField(blank=True, null=True)
+    estado = models.ForeignKey("Estado", on_delete=models.CASCADE)
 
     def getEstado(self):
         return self.estado.getNombre()
