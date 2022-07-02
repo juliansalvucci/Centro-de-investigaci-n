@@ -1,0 +1,25 @@
+
+<h1>SELECCIONE UN TURNO</h1>
+<div class="container ">
+    <p>Paso 4 de 11</p>
+    <hr>
+    <div class="row">
+        <form action="../tomarSeleccionTurno/" method="POST">
+            {% csrf_token %}
+
+            <label for="turnoSeleccionado" class="label-readonly mt-2">Recurso:</label>
+            <select name="turnoSeleccionado" class="form-select mt-1 mb-4" required>
+                {% for turnoDeRecursoTecnologico in turnosDeRecursoTecnologico %}
+                <option value="{{turnoDeRecursoTecnologico.diaSemana}}">{{turnoDeRecursoTecnologico.fechaHoraInicio}}</option>
+                {% endfor %}
+            </select>
+        
+            <div class="submit-container">
+                <input type="submit" value="Seleccionar" class="btn btn-primary mb-2">
+            </div>
+        </form>
+    </div>
+    <div id="calendar">
+
+    </div> 
+</div>
