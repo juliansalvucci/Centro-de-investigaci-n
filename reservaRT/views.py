@@ -57,9 +57,13 @@ def ordenarPorCI(request):
 
 def tomarSeleccionRecursoTecnologico(request):
     recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
+    rtSeleccionado = RecursoTecnologico.objects.get(numeroRT=recursoTecnologicoSeleccionado)
     cientificoLogueado = buscarCientificoLogueado(1)
 
+    aux = rtSeleccionado.validarCientifico(cientificoLogueado)
+
     print(cientificoLogueado)
+    print(aux, "PerteneceACI")
 
     context = {
         'recursoTecnologicoSeleccionado': recursoTecnologicoSeleccionado,
@@ -79,17 +83,38 @@ def validarCientificoDeRecursoTecnologico(request):
 
     recursoTecnologicoSeleccionado.validarCientifico(cientificoLogueado)
     
+def mostrarTurnosDeRecursoTecnologico(request):
+    recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
+    rtSeleccionado = RecursoTecnologico.objects.get(numeroRT=recursoTecnologicoSeleccionado)
+    print(recursoTecnologicoSeleccionado)
+    turnosDeRecursoTecnologico = getTurnosDeRecursoTecnologico(rtSeleccionado)
 
+    print(turnosDeRecursoTecnologico)
+
+    context = {
+        'recursoTecnologicoSeleccionado': recursoTecnologicoSeleccionado,
+        'turnosDeRecursoTecnologico': turnosDeRecursoTecnologico,
+    }
+
+    return render(request, 'Paso4.html', context)
 
 
 def getTurnosDeRecursoTecnologico(recursoTecnologicoSeeccionado):
     turnos = recursoTecnologicoSeeccionado.getTurnos()
     turnosParaSeleccion = []
     for turno in turnos:
-        turno.getEstado()
+        turnosParaSeleccion.append(turno.getEstado())
        
-    return turnosParaSeleccion.append(turno)
+    return turnosParaSeleccion
     
+def tomarSeleccionTurno(request):
+    turnoSeleccionado = request.POST['turnoSeleccionado']
+
+    context = {
+        'turnoSeleccionado': turnoSeleccionado,
+    }
+
+    return render(request, 'Paso5.html')
 
 
 def getFechaHoraActual():

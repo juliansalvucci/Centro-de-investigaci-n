@@ -1,6 +1,7 @@
 <h1>SELECCIONE UN RECURSO TECNOLÓGICO</h1>
+PUTitoOOOOOOO
 <div class="container ">
-    <p>Paso 2 de 11</p>
+    <p>Paso 4 de 11</p>
     <hr>
     <div class="row">
         <form action="../tomarSeleccionRecursoTecnologico/" method="POST">
@@ -8,8 +9,8 @@
 
             <label for="recursoTecnologicoSeleccionado" class="label-readonly mt-2">Recurso:</label>
             <select name="recursoTecnologicoSeleccionado" class="form-select mt-1 mb-4" required>
-                {% for recursoTecnologico in recursosTecnologicos %}
-                <option value="{{recursoTecnologico.numeroInventario}}">{{recursoTecnologico.numeroInventario}} - {{recursoTecnologico.modelo}} - {{recursoTecnologico.marca}} - {{centroInvestigacion}}</option>
+                {% for turnoDeRecursoTecnologico in turnosDeRecursoTecnologico %}
+                <option value="{{turnoDeRecursoTecnologico}}">{{turnosDeRecursoTecnologico}}</option>
                 {% endfor %}
             </select>
         

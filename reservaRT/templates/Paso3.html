@@ -1,18 +1,16 @@
 <h1>SELECCIONE UN TIPO DE RECURSO TECNOLÓGICO</h1>
 <div class="container ">
-    <p>Paso 1 de 11</p>
+    <p>Paso 3 de 11</p>
     <hr>
     <div class="row">
-        <form action="../tomarSeleccionTipoRecursoTecnologico/" method="POST">
+        <form action="../mostrarTurnosDeRecursoTecnologico/" method="POST">
             {% csrf_token %}
 
-            <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly mt-2">Tipo:</label>
-            {{cientificoLogueado}}
-            <select name="tipoRecursoTecnologicoSeleccionado" class="form-select mt-1 mb-4" required>
-                {% for tipoRecursoTecnologico in tiposRecursosTecnologicos %}
-                <option value="{{tipoRecursoTecnologico}}">{{tipoRecursoTecnologico}}</option>
-                {% endfor %}
-            </select>
+            <label for="recursoTecnologicoSeleccionado" class="label-readonly mt-2">Recurso:</label>
+            <input name="recursoTecnologicoSeleccionado" value="{{recursoTecnologicoSeleccionado}}" class="form-select mt-1 mb-4" required>
+                
+ 
+            
         
             <div class="submit-container">
                 <input type="submit" value="Seleccionar" class="btn btn-primary mb-2">

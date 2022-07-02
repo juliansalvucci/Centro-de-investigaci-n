@@ -1,4 +1,5 @@
 <h1>SELECCIONE UN RECURSO TECNOLÓGICO</h1>
+PUTOOOOOOO
 <div class="container ">
     <p>Paso 2 de 11</p>
     <hr>
@@ -8,8 +9,8 @@
 
             <label for="recursoTecnologicoSeleccionado" class="label-readonly mt-2">Recurso:</label>
             <select name="recursoTecnologicoSeleccionado" class="form-select mt-1 mb-4" required>
-                {% for recursoTecnologico in recursosTecnologicos %}
-                <option value="{{recursoTecnologico.numeroInventario}}">{{recursoTecnologico.numeroInventario}} - {{recursoTecnologico.modelo}} - {{recursoTecnologico.marca}} - {{centroInvestigacion}}</option>
+                {% for turnoDeRecursoTecnologico in turnosDeRecursoTecnologico %}
+                <option value="{{turnoDeRecursoTecnologico}}">{{turnosDeRecursoTecnologico.fechaGeneracion}}</option>
                 {% endfor %}
             </select>
         
