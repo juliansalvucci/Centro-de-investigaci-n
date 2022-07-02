@@ -1,5 +1,4 @@
 <h1>SELECCIONE UN RECURSO TECNOLÓGICO</h1>
-PUTOOOOOOO
 <div class="container ">
     <p>Paso 2 de 11</p>
     <hr>
@@ -10,7 +9,7 @@ PUTOOOOOOO
             <label for="recursoTecnologicoSeleccionado" class="label-readonly mt-2">Recurso:</label>
             <select name="recursoTecnologicoSeleccionado" class="form-select mt-1 mb-4" required>
                 {% for turnoDeRecursoTecnologico in turnosDeRecursoTecnologico %}
-                <option value="{{turnoDeRecursoTecnologico}}">{{turnosDeRecursoTecnologico.fechaGeneracion}}</option>
+                <option value="{{turnoDeRecursoTecnologico}}">{{turnoDeRecursoTecnologico.diaSemana}}</option>
                 {% endfor %}
             </select>
         

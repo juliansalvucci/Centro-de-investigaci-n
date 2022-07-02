@@ -1,5 +1,4 @@
-<h1>SELECCIONE UN RECURSO TECNOLÓGICO</h1>
-PUTitoOOOOOOO
+<h1>SELECCIONE UN TURNO</h1>
 <div class="container ">
     <p>Paso 4 de 11</p>
     <hr>
@@ -7,10 +6,10 @@ PUTitoOOOOOOO
         <form action="../tomarSeleccionRecursoTecnologico/" method="POST">
             {% csrf_token %}
 
-            <label for="recursoTecnologicoSeleccionado" class="label-readonly mt-2">Recurso:</label>
-            <select name="recursoTecnologicoSeleccionado" class="form-select mt-1 mb-4" required>
+            <label for="turnoSeleccionado" class="label-readonly mt-2">Recurso:</label>
+            <select name="turnoSeleccionado" class="form-select mt-1 mb-4" required>
                 {% for turnoDeRecursoTecnologico in turnosDeRecursoTecnologico %}
-                <option value="{{turnoDeRecursoTecnologico}}">{{turnosDeRecursoTecnologico}}</option>
+                <option value="{{turnoDeRecursoTecnologico.diaSemana}}">{{turnoDeRecursoTecnologico.fechaHoraInicio}}</option>
                 {% endfor %}
             </select>
         

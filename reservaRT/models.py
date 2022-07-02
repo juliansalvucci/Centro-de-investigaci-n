@@ -177,16 +177,20 @@ class Turno(models.Model):
     fechaHoraFin = models.DateTimeField()
     cambioEstadoTurno = models.ForeignKey('CambioEstadoTurno', on_delete=models.CASCADE, blank=True, null=True)
 
+    def getFechaGeneracion(self):
+        return self.fechaGeneracion
+
+    def getDiaSemana(self):
+        return self.diaSemana
+
+    def getFechaHoraInicio(self):
+        return self.fechaHoraInicio
+
+    def getFechaHoraFin(self):
+        return self.fechaHoraFin
+
     def getEstado(self):
-        estado = self.cambioEstadoTurno.getEstado()
-        turno = {
-            'fechaGeneracion': self.fechaGeneracion,
-            'diaSemana': self.diaSemana,
-            'fechaHoraInicio': self.fechaHoraInicio,
-            'fechaHoraFin': self.fechaHoraFin,
-            'cambioEstadoTurno': estado
-        }
-        return turno
+        return self.cambioEstadoTurno.getEstado()
 
 
 #CAMBIOESTADOTURNO

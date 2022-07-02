@@ -27,6 +27,8 @@ def tomarSeleccionTipoRecursoTecnologico(request):
     tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
     recursosTecnologicos = obtenerRecursosTecnologico(tipoRecursoTecnologicoSeleccionado)
 
+    print(recursosTecnologicos)
+
     context = {
         'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
         'recursosTecnologicos' : recursosTecnologicos,
@@ -39,13 +41,13 @@ def obtenerRecursosTecnologico(tipoRT):
     for recursoTecnologico in RecursoTecnologico.objects.all():
         if recursoTecnologico.esTuTipoRt(tipoRT):
             if recursoTecnologico.esReservable():
-                rt = {
+                objRecurso = {
                    'numeroInventario': recursoTecnologico.getNumeroInventario(),
                    'modelo' : recursoTecnologico.getModelo(),
                    'marca': recursoTecnologico.getMarca(),
                    'centroInvestigacion': recursoTecnologico.getCentroInvestigacion(),
                 }
-                recursosTecnologicos.append(rt)
+                recursosTecnologicos.append(objRecurso)
 
     return recursosTecnologicos
 
@@ -103,7 +105,14 @@ def getTurnosDeRecursoTecnologico(recursoTecnologicoSeeccionado):
     turnos = recursoTecnologicoSeeccionado.getTurnos()
     turnosParaSeleccion = []
     for turno in turnos:
-        turnosParaSeleccion.append(turno.getEstado())
+        objTurno = {
+            'fechaGeneracion' : turno.getFechaGeneracion(),
+            'diaSemana': turno.getDiaSemana(),
+            'fechaHoraInicio' : turno.getFechaHoraInicio(),
+            'fechaHoraFin' : turno.getFechaHoraFin(),
+            'estado': turno.getEstado()
+        }
+        turnosParaSeleccion.append(objTurno)
        
     return turnosParaSeleccion
     
