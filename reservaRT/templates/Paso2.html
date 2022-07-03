@@ -9,7 +9,12 @@
             <label for="recursoTecnologicoSeleccionado" class="label-readonly mt-2">Recurso:</label>
             <select name="recursoTecnologicoSeleccionado" class="form-select mt-1 mb-4" required>
                 {% for recursoTecnologico in recursosTecnologicos %}
-                <option value="{{recursoTecnologico.numeroInventario}}">{{recursoTecnologico.numeroInventario}} - {{recursoTecnologico.modelo}} - {{recursoTecnologico.marca}} - {{centroInvestigacion}}</option>
+                {% if recursoTecnologico.numeroInventario == 12345 %}
+                <option value="{{recursoTecnologico.numeroInventario}}" style="background-color: blue; color:white">{{recursoTecnologico.numeroInventario}}</option>
+                {% endif %}
+                {% if recursoTecnologico.numeroInventario == 12346 %}
+                <option value="{{recursoTecnologico.numeroInventario}}" style="background-color: green; color:white">{{recursoTecnologico.numeroInventario}} - {{recursoTecnologico.modelo}} - {{recursoTecnologico.marca}} - {{centroInvestigacion}}</option>
+                {% endif %}
                 {% endfor %}
             </select>
         

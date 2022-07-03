@@ -24,9 +24,9 @@ def buscarTiposRecursosTecnologicos(): # Funcion para buscar los tipos de recurs
     return tiposRecursosTecnologicos # Retorno la lista de tipos de recursos tecnologicos
 
 
-def tomarSeleccionTipoRecursoTecnologico(request):
-    tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
-    recursosTecnologicos = ordenarPorCI(BuscarRecursosTecnologico(tipoRecursoTecnologicoSeleccionado))
+def tomarSeleccionTipoRecursoTecnologico(request): # Funcion para tomar la seleccion del tipo de recurso tecnologico
+    tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado'] # Tomo el tipo de recurso tecnologico seleccionado
+    recursosTecnologicos = ordenarPorCI(BuscarRecursosTecnologico(tipoRecursoTecnologicoSeleccionado)) # Busco los recursos tecnologicos del tipo seleccionado y los ordenos por centro de investigación.
 
     
     context = {
@@ -36,12 +36,12 @@ def tomarSeleccionTipoRecursoTecnologico(request):
 
     return render(request, 'Paso2.html', context)
 
-def BuscarRecursosTecnologico(tipoRT): 
-    recursosTecnologicos = []
-    for recursoTecnologico in RecursoTecnologico.objects.all():
-        if recursoTecnologico.esTuTipoRt(tipoRT):
-            if recursoTecnologico.esReservable():
-                objRecurso = {
+def BuscarRecursosTecnologico(tipoRT): # Funcion para buscar los recursos tecnologicos de un tipo especifico
+    recursosTecnologicos = [] # Creo una lista para los recursos tecnologicos
+    for recursoTecnologico in RecursoTecnologico.objects.all(): # Recorro todos los recursos tecnologicos
+        if recursoTecnologico.esTuTipoRt(tipoRT): # Si el recurso tecnologico es del tipo seleccionado
+            if recursoTecnologico.esReservable(): # Si el recurso tecnologico es reservable
+                objRecurso = { 
                    'numeroInventario': recursoTecnologico.getNumeroInventario(),
                    'modelo' : recursoTecnologico.getModelo(),
                    'marca': recursoTecnologico.getMarca(),
@@ -49,19 +49,19 @@ def BuscarRecursosTecnologico(tipoRT):
                 }
                 recursosTecnologicos.append(objRecurso)
 
-    return recursosTecnologicos
+    return recursosTecnologicos # Retorno la lista de recursos tecnologicos
 
-def ordenarPorCI(recursosTecnologicos):
-    recursosOrdenadosPorCI = sorted(recursosTecnologicos, key=lambda k: k['centroInvestigacion'])
+def ordenarPorCI(recursosTecnologicos): # Funcion para ordenar los recursos tecnologicos por centro de investigacion
+    recursosOrdenadosPorCI = sorted(recursosTecnologicos, key=lambda k: k['centroInvestigacion']) # Ordeno los recursos tecnologicos por centro de investigacion
     return recursosOrdenadosPorCI
 
 
-def tomarSeleccionRecursoTecnologico(request):
-    recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
-    rtSeleccionado = RecursoTecnologico.objects.get(numeroRT=recursoTecnologicoSeleccionado)
-    cientificoLogueado = buscarCientificoLogueado(1)
+def tomarSeleccionRecursoTecnologico(request): # Funcion para tomar la seleccion del recurso tecnologico
+    recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado'] # Tomo el recurso tecnologico seleccionado
+    rtSeleccionado = RecursoTecnologico.objects.get(numeroRT=recursoTecnologicoSeleccionado) # Busco el recurso tecnologico seleccionado
+    cientificoLogueado = buscarCientificoLogueado(1) # Busco el cientifico logueado
 
-    aux = rtSeleccionado.validarCientifico(cientificoLogueado)
+    aux = rtSeleccionado.validarCientifico(cientificoLogueado) 
 
    
     print(cientificoLogueado)
@@ -74,16 +74,16 @@ def tomarSeleccionRecursoTecnologico(request):
 
     return render(request, 'Paso3.html', context)
 
-def buscarCientificoLogueado(sesion):
-    activaSesion = Sesion.objects.get(pk=sesion)
-    cientificoLoqueado = activaSesion.getUsuarioEnSesion()
+def buscarCientificoLogueado(sesion): # Funcion para buscar el cientifico logueado.
+    activaSesion = Sesion.objects.get(pk=sesion) # Busco la sesion activa.
+    cientificoLoqueado = activaSesion.getUsuarioEnSesion() # Busco el cientifico logueado.
     return cientificoLoqueado
 
-def validarCientificoDeRecursoTecnologico(request):
-    cientificoLogueado = request.POST['cientificoLogueado']
-    recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
+def validarCientificoDeRecursoTecnologico(request): # Funcion para validar el cientifico de un recurso tecnologico.
+    cientificoLogueado = request.POST['cientificoLogueado'] # Tomo el cientifico logueado.
+    recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado'] # Tomo el recurso tecnologico seleccionado.
 
-    recursoTecnologicoSeleccionado.validarCientifico(cientificoLogueado)
+    recursoTecnologicoSeleccionado.validarCientifico(cientificoLogueado) # Valido el cientifico del recurso tecnologico.
     
 def mostrarTurnosDeRecursoTecnologico(request):
     recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
