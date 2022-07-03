@@ -1,7 +1,8 @@
-import datetime
+from datetime import datetime, timedelta
 from multiprocessing import context
 from operator import attrgetter
 from django.shortcuts import render
+from pytz_deprecation_shim import UTC
 from reservaRT.models import CentroInvestigacion, Estado, RecursoTecnologico, Sesion, TipoRecursoTecnologico
 
 #GestorReservaTurnoRecursoTecnologico
@@ -61,11 +62,14 @@ def tomarSeleccionRecursoTecnologico(request): # Funcion para tomar la seleccion
     rtSeleccionado = RecursoTecnologico.objects.get(numeroRT=recursoTecnologicoSeleccionado) # Busco el recurso tecnologico seleccionado
     cientificoLogueado = buscarCientificoLogueado(1) # Busco el cientifico logueado
 
-    aux = rtSeleccionado.validarCientifico(cientificoLogueado) 
+    if not rtSeleccionado.validarCientifico(cientificoLogueado): # Si el cientifico logueado no pertenece al mismo centro del recurso tecnologico seleccionado.
+        context = {
+            'error': 'El cientifico logueado no es el mismo que el que reserva el recurso tecnologico',
+        }
+        return render(request, 'Paso6.html', context)
 
    
     print(cientificoLogueado)
-    print(aux, "PerteneceACI")
 
     context = {
         'recursoTecnologicoSeleccionado': recursoTecnologicoSeleccionado,
@@ -90,6 +94,12 @@ def mostrarTurnosDeRecursoTecnologico(request):
     rtSeleccionado = RecursoTecnologico.objects.get(numeroRT=recursoTecnologicoSeleccionado)
     print(recursoTecnologicoSeleccionado)
     turnosDeRecursoTecnologico = getTurnosDeRecursoTecnologico(rtSeleccionado)
+  
+    if len(turnosDeRecursoTecnologico) == 0:
+        context = {
+            'error': 'No hay turnos para el recurso tecnologico seleccionado',
+        }
+        return render(request, 'Paso7.html', context)
 
     print(turnosDeRecursoTecnologico)
 
@@ -100,19 +110,23 @@ def mostrarTurnosDeRecursoTecnologico(request):
 
     return render(request, 'Paso4.html', context)
 
+def getFechaHoraActual():
+    return datetime.now()
 
 def getTurnosDeRecursoTecnologico(recursoTecnologicoSeeccionado):
     turnos = recursoTecnologicoSeeccionado.getTurnos()
     turnosParaSeleccion = []
+    fechaHoraActual = getFechaHoraActual()
     for turno in turnos:
-        objTurno = {
-            'fechaGeneracion' : turno.getFechaGeneracion(),
-            'diaSemana': turno.getDiaSemana(),
-            'fechaHoraInicio' : turno.getFechaHoraInicio(),
-            'fechaHoraFin' : turno.getFechaHoraFin(),
-            'estado': turno.getEstado()
-        }
-        turnosParaSeleccion.append(objTurno)
+        if turno.getFechaHoraInicio().replace(tzinfo=UTC) > fechaHoraActual.replace(tzinfo=UTC): # Si el turno no ha comenzado
+           objTurno = {
+               'fechaGeneracion' : turno.getFechaGeneracion(),
+               'diaSemana': turno.getDiaSemana(),
+               'fechaHoraInicio' : turno.getFechaHoraInicio(),
+               'fechaHoraFin' : turno.getFechaHoraFin(),
+               'estado': turno.getEstado()
+           }
+           turnosParaSeleccion.append(objTurno)
        
     return turnosParaSeleccion
     
@@ -126,8 +140,7 @@ def tomarSeleccionTurno(request):
     return render(request, 'Paso5.html')
 
 
-def getFechaHoraActual():
-    return datetime.now()
+
 
 def buscarEstadoReservado():
     for estado in Estado.object.all():

@@ -15,6 +15,9 @@
                 {% if recursoTecnologico.numeroInventario == 12346 %}
                 <option value="{{recursoTecnologico.numeroInventario}}" style="background-color: green; color:white">{{recursoTecnologico.numeroInventario}} - {{recursoTecnologico.modelo}} - {{recursoTecnologico.marca}} - {{centroInvestigacion}}</option>
                 {% endif %}
+                {% if recursoTecnologico.numeroInventario == 12347 %}
+                <option value="{{recursoTecnologico.numeroInventario}}" style="background-color: green; color:white">{{recursoTecnologico.numeroInventario}} - {{recursoTecnologico.modelo}} - {{recursoTecnologico.marca}} - {{centroInvestigacion}}</option>
+                {% endif %}
                 {% endfor %}
             </select>
         
