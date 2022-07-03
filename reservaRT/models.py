@@ -92,7 +92,8 @@ class RecursoTecnologico(models.Model):
         return self.modelo.getMarca()
 
     def esReservable(self):
-        return True
+        if(self.fechaBaja == None):
+            return True
         #return self.cambioEstadoRecursoTecnologico.esReservable()
 
     def validarCientifico(self, cientifico):
@@ -107,6 +108,9 @@ class RecursoTecnologico(models.Model):
 
     def getCentroInvestigacion(self):
         return self.centroInvestigacion.getNombre()
+
+    def getEstado(self):
+        return self.cambioEstadoRecursoTecnologico.getEstado()
     
     def esTuTipoRt(self, tipoRT): # Funcion para saber si el recurso tecnologico es de un tipo especifico
         print(self.tipoRecursoTecnologico.getNombre())
@@ -139,6 +143,10 @@ class Estado(models.Model):
 class CambioEstadoRT(models.Model):
     fechaHoraDesde = models.DateTimeField()
     fechaHoraHasta = models.DateTimeField()
+    estado = models.ForeignKey("Estado", on_delete=models.CASCADE,blank=True, null=True)
+
+    def getEstado(self):
+        return self.estado.getNombre()
 
     def esReservable(self):
         return self.estado.getEsReservable()

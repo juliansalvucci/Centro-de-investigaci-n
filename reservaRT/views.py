@@ -178,10 +178,7 @@ def confirmarReserva(request):
     turno.crearNuevoCambioEstadoTurno(fechaHoraDesde,estado)
 
     #enviarMail(request)
-    enviarWP()
-
-
- 
+    #enviarWP()
 
     context ={
        'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
@@ -224,7 +221,7 @@ def enviarWP():
     sleep(5)
 
     for i in range(500):
-        pyautogui.typewrite('.')
+        pyautogui.typewrite('Reserva de turno confirmada con éxito')
         pyautogui.press('enter')
 
     
