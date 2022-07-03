@@ -3,7 +3,7 @@ from multiprocessing import context
 from operator import attrgetter
 from django.shortcuts import render
 from pytz_deprecation_shim import UTC
-from reservaRT.models import CentroInvestigacion, Estado, RecursoTecnologico, Sesion, TipoRecursoTecnologico
+from reservaRT.models import CambioEstadoTurno, CentroInvestigacion, Estado, RecursoTecnologico, Sesion, TipoRecursoTecnologico, Turno
 
 #GestorReservaTurnoRecursoTecnologico
 def mostrarTiposRecursosTecnologicosParaSeleccion(request): # Vista para la opcion de reserva de turno de recurso tecnologico
@@ -158,6 +158,19 @@ def confirmarReserva(request):
     tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
     cientificoLogueado = request.POST['cientificoLogueado']
     turnoSeleccionado = request.POST['turnoSeleccionado']
+    turno = Turno.objects.get(diaSemana=turnoSeleccionado)
+    estado = buscarEstadoReservado()
+
+    print(turno,'SOS UN TROLAZO')
+
+    fechaHoraActual = getFechaHoraActual()
+    fechaHoraDesde = fechaHoraActual.replace(tzinfo=UTC)
+   
+    turno.crearNuevoCambioEstadoTurno(fechaHoraDesde,'',estado)
+
+
+ 
+
     context ={
        'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
        'turnoSeleccionado': turnoSeleccionado,
@@ -168,7 +181,7 @@ def confirmarReserva(request):
     return render(request, 'Paso8.html', context)
 
 def buscarEstadoReservado():
-    for estado in Estado.object.all():
+    for estado in Estado.objects.all():
         if estado.esAmbitoTurno():
             if estado.getNombre() == "Reservado":
                 return estado

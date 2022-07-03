@@ -142,12 +142,7 @@ class CambioEstadoRT(models.Model):
     def esReservable(self):
         return self.estado.getEsReservable()
 
-    def setEstado(self, estado):
-        self.estado = estado
-
-    def new(self, estado, fechaHoraActual):
-        self.fechaHoraDesde = fechaHoraActual
-        self.setEstado(estado)
+   
 
 #MODELO
 class Modelo(models.Model):
@@ -203,6 +198,13 @@ class Turno(models.Model):
     def getEstado(self):
         return self.cambioEstadoTurno.getEstado()
 
+    def crearNuevoCambioEstadoTurno(self,fechaHoraDesde,fechaHoraHasta, estado):
+        cambioEstadoTurno = CambioEstadoTurno.objects.create()
+        cambioEstadoTurno.new(fechaHoraDesde, fechaHoraHasta, estado)
+        cambioEstadoTurno.save()
+        self.cambioEstadoTurno.add(cambioEstadoTurno)
+        self.save()
+
 
 #CAMBIOESTADOTURNO
 class CambioEstadoTurno(models.Model):
@@ -215,3 +217,11 @@ class CambioEstadoTurno(models.Model):
     
     def esReservable(self):
         return self.estado.esReservable()
+
+    def setEstado(self, estado):
+        self.estado = estado
+
+    def new(self, fechaHoraDesde, fechaHoraHasta, estado):
+        self.fechaHoraDesde = fechaHoraDesde
+        self.fechaHoraHasta = fechaHoraHasta
+        self.setEstado(estado)
