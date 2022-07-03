@@ -1,22 +1,30 @@
-<h1>SELECCIONE UN RECURSO TECNOLÓGICO</h1>
-PUTAZOOOOOO
+USTED ELIGIÓ UN TURNO
+
 <div class="container ">
-    <p>Paso 2 de 11</p>
+    <p>Paso 4 de 11</p>
     <hr>
     <div class="row">
-        <form action="../tomarSeleccionRecursoTecnologico/" method="POST">
+        <form action="../confirmarReserva/" method="POST">
             {% csrf_token %}
 
-            <label for="recursoTecnologicoSeleccionado" class="label-readonly mt-2">Recurso:</label>
-            <select name="recursoTecnologicoSeleccionado" class="form-select mt-1 mb-4" required>
-                {% for turnoDeRecursoTecnologico in turnosDeRecursoTecnologico %}
-                <option value="{{turnoDeRecursoTecnologico}}">{{turnoDeRecursoTecnologico.diaSemana}}</option>
-                {% endfor %}
-            </select>
         
             <div class="submit-container">
                 <input type="submit" value="Seleccionar" class="btn btn-primary mb-2">
             </div>
         </form>
     </div>
+    <div id="calendar">
+
+    </div> 
 </div>
+
+<div>
+    <label>Notificación mail</label>
+    <input type="checkbox">
+</div>
+<div>
+    <label>Notificación whatsapp</label>
+    <input type="checkbox">
+</div>
+
+

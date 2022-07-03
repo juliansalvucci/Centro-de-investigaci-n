@@ -137,10 +137,14 @@ def tomarSeleccionTurno(request):
         'turnoSeleccionado': turnoSeleccionado,
     }
 
-    return render(request, 'Paso5.html')
+    return render(request, 'Paso5.html', context)
 
 
-
+def confirmarReserva(request):
+    context ={
+       'msg': 'sos un hijo de remil puta'
+    }
+    return render(request, 'Paso8.html', context)
 
 def buscarEstadoReservado():
     for estado in Estado.object.all():
