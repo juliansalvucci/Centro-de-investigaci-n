@@ -1,5 +1,6 @@
 import datetime
 from multiprocessing import context
+from operator import attrgetter
 from django.shortcuts import render
 from reservaRT.models import CentroInvestigacion, Estado, RecursoTecnologico, Sesion, TipoRecursoTecnologico
 
@@ -25,11 +26,9 @@ def buscarTiposRecursosTecnologicos(): # Funcion para buscar los tipos de recurs
 
 def tomarSeleccionTipoRecursoTecnologico(request):
     tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
-    recursosTecnologicos = BuscarRecursosTecnologico(tipoRecursoTecnologicoSeleccionado)
+    recursosTecnologicos = ordenarPorCI(BuscarRecursosTecnologico(tipoRecursoTecnologicoSeleccionado))
 
-    print(ordenarPorCI(BuscarRecursosTecnologico(tipoRecursoTecnologicoSeleccionado)),'TROLOOOOOO')
     
-
     context = {
         'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
         'recursosTecnologicos' : recursosTecnologicos,
@@ -53,7 +52,8 @@ def BuscarRecursosTecnologico(tipoRT):
     return recursosTecnologicos
 
 def ordenarPorCI(recursosTecnologicos):
-    return recursosTecnologicos.sort(key=lambda x: x['centroInvestigacion'])
+    recursosOrdenadosPorCI = sorted(recursosTecnologicos, key=lambda k: k['centroInvestigacion'])
+    return recursosOrdenadosPorCI
 
 
 def tomarSeleccionRecursoTecnologico(request):
