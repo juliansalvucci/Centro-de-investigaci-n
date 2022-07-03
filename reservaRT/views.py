@@ -1,9 +1,9 @@
 import datetime
 from multiprocessing import context
 from django.shortcuts import render
-from reservaRT.models import Estado, RecursoTecnologico, Sesion, TipoRecursoTecnologico
+from reservaRT.models import CentroInvestigacion, Estado, RecursoTecnologico, Sesion, TipoRecursoTecnologico
 
-
+#GestorReservaTurnoRecursoTecnologico
 def mostrarTiposRecursosTecnologicosParaSeleccion(request): # Vista para la opcion de reserva de turno de recurso tecnologico
 
     tiposRecursosTecnologicos = buscarTiposRecursosTecnologicos() # Obtengo los tipos de recursos tecnologicos
@@ -25,9 +25,10 @@ def buscarTiposRecursosTecnologicos(): # Funcion para buscar los tipos de recurs
 
 def tomarSeleccionTipoRecursoTecnologico(request):
     tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
-    recursosTecnologicos = obtenerRecursosTecnologico(tipoRecursoTecnologicoSeleccionado)
+    recursosTecnologicos = BuscarRecursosTecnologico(tipoRecursoTecnologicoSeleccionado)
 
-    print(recursosTecnologicos)
+    print(ordenarPorCI(BuscarRecursosTecnologico(tipoRecursoTecnologicoSeleccionado)),'TROLOOOOOO')
+    
 
     context = {
         'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
@@ -36,7 +37,7 @@ def tomarSeleccionTipoRecursoTecnologico(request):
 
     return render(request, 'Paso2.html', context)
 
-def obtenerRecursosTecnologico(tipoRT): 
+def BuscarRecursosTecnologico(tipoRT): 
     recursosTecnologicos = []
     for recursoTecnologico in RecursoTecnologico.objects.all():
         if recursoTecnologico.esTuTipoRt(tipoRT):
@@ -51,10 +52,8 @@ def obtenerRecursosTecnologico(tipoRT):
 
     return recursosTecnologicos
 
-def ordenarPorCI(request):
-    recursosTecnologicosParaMostrar = request.POST['rt']
-
-    recursosTecnologicosParaMostrar.sort(key=lambda x: x['centroInvestigacion'])
+def ordenarPorCI(recursosTecnologicos):
+    return recursosTecnologicos.sort(key=lambda x: x['centroInvestigacion'])
 
 
 def tomarSeleccionRecursoTecnologico(request):

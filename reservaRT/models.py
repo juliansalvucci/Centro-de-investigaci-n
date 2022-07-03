@@ -37,12 +37,12 @@ class CentroInvestigacion(models.Model):
     fechaAlta = models.DateField()
     fechaBaja = models.DateField(blank=True, null=True)
     recursoTecnologico = models.ManyToManyField('RecursoTecnologico')
-    asignacionCientifico = models.ForeignKey('AsignacionCientifico', on_delete=models.CASCADE, blank=True, null=True)
+    asignacionCientifico = models.ForeignKey('AsignacionCientificoDelCI', on_delete=models.CASCADE, blank=True, null=True)
 
     def getNombre(self):
         return self.nombre
 
-    def getRecursosTecnologicos(self):
+    def misRecursosTecnologicos(self):
         recursos = []
 
         for recurso in self.recursoTecnologico.all():
@@ -55,7 +55,7 @@ class CentroInvestigacion(models.Model):
         return self.asignacionCientifico.mostrarCientificoDeCi(cientifico)
 
 #ASIGNACIÓNCIENTÍFICO
-class AsignacionCientifico(models.Model):
+class AsignacionCientificoDelCI(models.Model):
     fechaDesde = models.DateField()
     fechaHasta = models.DateField(blank=True, null=True)
     personalCientifico = models.ManyToManyField("PersonalCientifico")
