@@ -1,4 +1,5 @@
 from statistics import mode
+from threading import activeCount
 from django.db import models
 
 #PERSONALCIENCTÍFICO
@@ -181,7 +182,7 @@ class Turno(models.Model):
     diaSemana = models.CharField(max_length=10)
     fechaHoraInicio = models.DateTimeField()
     fechaHoraFin = models.DateTimeField()
-    cambioEstadoTurno = models.ForeignKey('CambioEstadoTurno', on_delete=models.CASCADE, blank=True, null=True)
+    cambioEstadoTurno = models.ManyToManyField('CambioEstadoTurno', blank=True, null=True)
 
     def getFechaGeneracion(self):
         return self.fechaGeneracion
@@ -196,11 +197,12 @@ class Turno(models.Model):
         return self.fechaHoraFin
 
     def getEstado(self):
-        return self.cambioEstadoTurno.getEstado()
+        actualCambioEstadoTurno = self.cambioEstadoTurno.last()
+        return actualCambioEstadoTurno.getEstado()
 
-    def crearNuevoCambioEstadoTurno(self,fechaHoraDesde,fechaHoraHasta, estado):
+    def crearNuevoCambioEstadoTurno(self,fechaHoraDesde, estado):
         cambioEstadoTurno = CambioEstadoTurno.objects.create()
-        cambioEstadoTurno.new(fechaHoraDesde, fechaHoraHasta, estado)
+        cambioEstadoTurno.new(fechaHoraDesde, estado)
         cambioEstadoTurno.save()
         self.cambioEstadoTurno.add(cambioEstadoTurno)
         self.save()
@@ -208,9 +210,9 @@ class Turno(models.Model):
 
 #CAMBIOESTADOTURNO
 class CambioEstadoTurno(models.Model):
-    fechaHoraDesde = models.DateTimeField()
+    fechaHoraDesde = models.DateTimeField(blank=True, null=True)
     fechaHoraHasta = models.DateTimeField(blank=True, null=True)
-    estado = models.ForeignKey("Estado", on_delete=models.CASCADE)
+    estado = models.ForeignKey("Estado", on_delete=models.CASCADE,blank=True, null=True)
 
     def getEstado(self):
         return self.estado.getNombre()
@@ -221,7 +223,6 @@ class CambioEstadoTurno(models.Model):
     def setEstado(self, estado):
         self.estado = estado
 
-    def new(self, fechaHoraDesde, fechaHoraHasta, estado):
+    def new(self, fechaHoraDesde, estado):
         self.fechaHoraDesde = fechaHoraDesde
-        self.fechaHoraHasta = fechaHoraHasta
         self.setEstado(estado)

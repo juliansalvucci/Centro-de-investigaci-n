@@ -1,9 +1,16 @@
 from datetime import datetime, timedelta
+import email
+from re import template
+from turtle import settiltangle
+from django.utils.dateparse import parse_datetime
 from multiprocessing import context
 from operator import attrgetter
 from django.shortcuts import render
 from pytz_deprecation_shim import UTC
+from centroInvestigacion import settings
 from reservaRT.models import CambioEstadoTurno, CentroInvestigacion, Estado, RecursoTecnologico, Sesion, TipoRecursoTecnologico, Turno
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 
 #GestorReservaTurnoRecursoTecnologico
 def mostrarTiposRecursosTecnologicosParaSeleccion(request): # Vista para la opcion de reserva de turno de recurso tecnologico
@@ -164,9 +171,11 @@ def confirmarReserva(request):
     print(turno,'SOS UN TROLAZO')
 
     fechaHoraActual = getFechaHoraActual()
-    fechaHoraDesde = fechaHoraActual.replace(tzinfo=UTC)
+    fechaHoraDesde = (fechaHoraActual).replace(tzinfo=None)
    
-    turno.crearNuevoCambioEstadoTurno(fechaHoraDesde,'',estado)
+    turno.crearNuevoCambioEstadoTurno(fechaHoraDesde,estado)
+
+    enviarMail(request)
 
 
  
@@ -186,5 +195,23 @@ def buscarEstadoReservado():
             if estado.getNombre() == "Reservado":
                 return estado
 
+def enviarMail(request):
+    if request.method == 'POST':
+        RecursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
+        axel = 'PUTO'
+
+        template = render_to_string('Paso8.html', {
+            'axel': axel,
+        })
+
+        email = EmailMessage(
+            axel,
+            template,
+            settings.EMAIL_HOST_USER,
+            ['julianls783@gmail.com']
+        )
+
+        email.fail_silently = False
+        email.send()
 
 

@@ -15,7 +15,7 @@
             <label for="turnoSeleccionado" class="label-readonly mt-2">Recurso:</label>
             <select name="turnoSeleccionado" class="form-select mt-1 mb-4" required>
                 {% for turnoDeRecursoTecnologico in turnosDeRecursoTecnologico %}
-                <option value="{{turnoDeRecursoTecnologico.diaSemana}}">{{turnoDeRecursoTecnologico.fechaHoraInicio}}</option>
+                <option value="{{turnoDeRecursoTecnologico.diaSemana}}">{{turnoDeRecursoTecnologico.estado}}</option>
                 {% endfor %}
             </select>
         
