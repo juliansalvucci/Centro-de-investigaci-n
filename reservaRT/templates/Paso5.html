@@ -7,6 +7,12 @@ USTED ELIGIÓ UN TURNO
         <form action="../confirmarReserva/" method="POST">
             {% csrf_token %}
 
+            <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{tipoRecursoTecnologicoSeleccionado}}" readonly="true" name="tipoRecursoTecnologicoSeleccionado">
+            <label for="cientificoLogueado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{cientificoLogueado}}" readonly="true" name="cientificoLogueado">
+
+            <label for="recursoTecnologicoSeleccionado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{recursoTecnologicoSeleccionado}}" readonly="true" name="recursoTecnologicoSeleccionado">
+
+            <label for="turnoSeleccionado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{turnoSeleccionado}}" readonly="true" name="turnoSeleccionado">
         
             <div class="submit-container">
                 <input type="submit" value="Seleccionar" class="btn btn-primary mb-2">

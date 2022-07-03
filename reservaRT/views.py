@@ -58,6 +58,7 @@ def ordenarPorCI(recursosTecnologicos): # Funcion para ordenar los recursos tecn
 
 
 def tomarSeleccionRecursoTecnologico(request): # Funcion para tomar la seleccion del recurso tecnologico
+    tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
     recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado'] # Tomo el recurso tecnologico seleccionado
     rtSeleccionado = RecursoTecnologico.objects.get(numeroRT=recursoTecnologicoSeleccionado) # Busco el recurso tecnologico seleccionado
     cientificoLogueado = buscarCientificoLogueado(1) # Busco el cientifico logueado
@@ -72,6 +73,7 @@ def tomarSeleccionRecursoTecnologico(request): # Funcion para tomar la seleccion
     print(cientificoLogueado)
 
     context = {
+        'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
         'recursoTecnologicoSeleccionado': recursoTecnologicoSeleccionado,
         'cientificoLogueado': cientificoLogueado,
     }
@@ -90,7 +92,9 @@ def validarCientificoDeRecursoTecnologico(request): # Funcion para validar el ci
     recursoTecnologicoSeleccionado.validarCientifico(cientificoLogueado) # Valido el cientifico del recurso tecnologico.
     
 def mostrarTurnosDeRecursoTecnologico(request):
+    tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
     recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
+    cientificoLogueado = request.POST['cientificoLogueado']
     rtSeleccionado = RecursoTecnologico.objects.get(numeroRT=recursoTecnologicoSeleccionado)
     print(recursoTecnologicoSeleccionado)
     turnosDeRecursoTecnologico = getTurnosDeRecursoTecnologico(rtSeleccionado)
@@ -104,8 +108,10 @@ def mostrarTurnosDeRecursoTecnologico(request):
     print(turnosDeRecursoTecnologico)
 
     context = {
+        'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
         'recursoTecnologicoSeleccionado': recursoTecnologicoSeleccionado,
         'turnosDeRecursoTecnologico': turnosDeRecursoTecnologico,
+        'cientificoLogueado': cientificoLogueado,
     }
 
     return render(request, 'Paso4.html', context)
@@ -131,9 +137,16 @@ def getTurnosDeRecursoTecnologico(recursoTecnologicoSeeccionado):
     return turnosParaSeleccion
     
 def tomarSeleccionTurno(request):
+    recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
+    tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
+    cientificoLogueado = request.POST['cientificoLogueado']
     turnoSeleccionado = request.POST['turnoSeleccionado']
 
     context = {
+        'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
+        'turnoSeleccionado': turnoSeleccionado,
+        'recursoTecnologicoSeleccionado': recursoTecnologicoSeleccionado,
+        'cientificoLogueado': cientificoLogueado,
         'turnoSeleccionado': turnoSeleccionado,
     }
 
@@ -141,8 +154,16 @@ def tomarSeleccionTurno(request):
 
 
 def confirmarReserva(request):
+    recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
+    tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
+    cientificoLogueado = request.POST['cientificoLogueado']
+    turnoSeleccionado = request.POST['turnoSeleccionado']
     context ={
-       'msg': 'sos un hijo de remil puta'
+       'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
+       'turnoSeleccionado': turnoSeleccionado,
+       'recursoTecnologicoSeleccionado': recursoTecnologicoSeleccionado,
+       'cientificoLogueado': cientificoLogueado,
+       'msg': 'reservaConfirmada'
     }
     return render(request, 'Paso8.html', context)
 

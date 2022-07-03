@@ -7,6 +7,11 @@
         <form action="../tomarSeleccionTurno/" method="POST">
             {% csrf_token %}
 
+            <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{tipoRecursoTecnologicoSeleccionado}}" readonly="true" name="tipoRecursoTecnologicoSeleccionado">
+            <label for="cientificoLogueado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{cientificoLogueado}}" readonly="true" name="cientificoLogueado">
+
+            <label for="recursoTecnologicoSeleccionado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{recursoTecnologicoSeleccionado}}" readonly="true" name="recursoTecnologicoSeleccionado">
+            <label for="cientificoLogueado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{cientificoLogueado}}" readonly="true" name="cientificoLogueado">
             <label for="turnoSeleccionado" class="label-readonly mt-2">Recurso:</label>
             <select name="turnoSeleccionado" class="form-select mt-1 mb-4" required>
                 {% for turnoDeRecursoTecnologico in turnosDeRecursoTecnologico %}
