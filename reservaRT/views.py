@@ -1,5 +1,7 @@
+from asyncio import sleep
 from datetime import datetime, timedelta
 import email
+import pyautogui, webbrowser
 from re import template
 from turtle import settiltangle
 from django.utils.dateparse import parse_datetime
@@ -175,7 +177,8 @@ def confirmarReserva(request):
    
     turno.crearNuevoCambioEstadoTurno(fechaHoraDesde,estado)
 
-    enviarMail(request)
+    #enviarMail(request)
+    enviarWP()
 
 
  
@@ -215,3 +218,13 @@ def enviarMail(request):
         email.send()
 
 
+def enviarWP():
+    webbrowser.open('https://web.whatsapp.com/send?phone=+543535648757')
+
+    sleep(5)
+
+    for i in range(500):
+        pyautogui.typewrite('.')
+        pyautogui.press('enter')
+
+    
