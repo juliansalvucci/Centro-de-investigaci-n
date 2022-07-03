@@ -198,7 +198,7 @@ def buscarEstadoReservado():
 def enviarMail(request):
     if request.method == 'POST':
         RecursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
-        axel = 'PUTO'
+        axel = '¡¡MALOOOOOO!!'
 
         template = render_to_string('Paso8.html', {
             'axel': axel,
@@ -208,7 +208,7 @@ def enviarMail(request):
             axel,
             template,
             settings.EMAIL_HOST_USER,
-            ['julianls783@gmail.com']
+            ['julian.-taborda@hotmail.com']
         )
 
         email.fail_silently = False
