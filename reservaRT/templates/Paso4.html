@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="{% static 'fullcalendar/lib/main.css' %}">
 
 
-<div class="container">
+<div class="container" style="padding: 20px">
     <head>
         <h1>Seleccione un Turno</h1>
         <span>Paso 4 de 11</span>
@@ -58,10 +58,10 @@
                 {% for turnoDeRecursoTecnologico in turnosDeRecursoTecnologico %}
                     {
                         title: "{{ turnoDeRecursoTecnologico.estado }}",
-                        start: '{{ turnoDeRecursoTecnologico.fechaHoraInicio }}',
-                        end:   '{{ turnoDeRecursoTecnologico.fechaHoraFin }}'
+                        start: "{{ turnoDeRecursoTecnologico.fechaHoraInicio|date:'Y-m-d' }}",
+                        end:   "{{ turnoDeRecursoTecnologico.fechaHoraFin|date:'Y-m-d' }}"
                     },
-                {% endfor %}
+                {% endfor %},
             ]
         });
         calendar.render()
