@@ -38,6 +38,7 @@ def tomarSeleccionTipoRecursoTecnologico(request): # Funcion para tomar la selec
     tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado'] # Tomo el tipo de recurso tecnologico seleccionado
     recursosTecnologicos = ordenarPorCI(BuscarRecursosTecnologico(tipoRecursoTecnologicoSeleccionado)) # Busco los recursos tecnologicos del tipo seleccionado y los ordenos por centro de investigación.
 
+    print(recursosTecnologicos,'AAAAHHHH')
     
     context = {
         'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
@@ -56,6 +57,7 @@ def BuscarRecursosTecnologico(tipoRT): # Funcion para buscar los recursos tecnol
                    'modelo' : recursoTecnologico.getModelo(),
                    'marca': recursoTecnologico.getMarca(),
                    'centroInvestigacion': recursoTecnologico.getCentroInvestigacion(),
+                   'estado': recursoTecnologico.getEstado(),
                 }
                 recursosTecnologicos.append(objRecurso)
 
@@ -167,6 +169,9 @@ def confirmarReserva(request):
     tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
     cientificoLogueado = request.POST['cientificoLogueado']
     turnoSeleccionado = request.POST['turnoSeleccionado']
+    mail = request.POST['confirmacionMail']
+
+    whatsapp = request.POST['confirmacionWhatsapp']
     turno = Turno.objects.get(diaSemana=turnoSeleccionado)
     estado = buscarEstadoReservado()
 
@@ -175,8 +180,12 @@ def confirmarReserva(request):
    
     turno.crearNuevoCambioEstadoTurno(fechaHoraDesde,estado)
 
-    #enviarMail(request)
-    #enviarWP()
+    if mail == 'on':
+        enviarMail(request)
+
+    if whatsapp == 'on':
+        enviarWP()
+
 
     context ={
        'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
@@ -218,7 +227,7 @@ def enviarWP():
 
     sleep(5)
 
-    for i in range(500):
+    for i in range(5):
         pyautogui.typewrite('Reserva de turno confirmada con éxito')
         pyautogui.press('enter')
 

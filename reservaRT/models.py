@@ -121,7 +121,7 @@ class RecursoTecnologico(models.Model):
 
 #ESTADO
 class Estado(models.Model):
-    nombre = models.CharField(max_length=20)
+    nombre = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=100)
     ambito = models.CharField(max_length=20)
     esReservable = models.BooleanField()
@@ -140,11 +140,11 @@ class Estado(models.Model):
 #CAMBIOESTADOTIPORECURSOTECNOLÓGICO
 class CambioEstadoRT(models.Model):
     fechaHoraDesde = models.DateTimeField()
-    fechaHoraHasta = models.DateTimeField()
+    fechaHoraHasta = models.DateTimeField(blank=True, null=True)
     estado = models.ForeignKey("Estado", on_delete=models.CASCADE,blank=True, null=True)
 
     def getEstado(self):
-        return self.estado.getNombre()
+        return self.estado.mostrarEstado()
 
     def esReservable(self):
         return self.estado.getEsReservable()
