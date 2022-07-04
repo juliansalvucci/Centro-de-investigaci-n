@@ -7,7 +7,8 @@
             {% csrf_token %}
 
             <label for="recursoTecnologicoSeleccionado" class="label-readonly mt-2">Recurso:</label>
-            <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{tipoRecursoTecnologicoSeleccionado}}" readonly="true" name="tipoRecursoTecnologicoSeleccionado">
+            <!--Hacer invisible al logueado-->
+            <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly">científico logueado: </label><input type="text" class="input-readonly" value="{{tipoRecursoTecnologicoSeleccionado}}" readonly="true" name="tipoRecursoTecnologicoSeleccionado">
             <input name="recursoTecnologicoSeleccionado" value="{{recursoTecnologicoSeleccionado}}" class="form-select mt-1 mb-4" required>
             <label for="cientificoLogueado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{cientificoLogueado}}" readonly="true" name="cientificoLogueado">
 

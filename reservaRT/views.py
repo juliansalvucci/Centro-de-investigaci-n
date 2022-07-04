@@ -170,8 +170,6 @@ def confirmarReserva(request):
     turno = Turno.objects.get(diaSemana=turnoSeleccionado)
     estado = buscarEstadoReservado()
 
-    print(turno,'SOS UN TROLAZO')
-
     fechaHoraActual = getFechaHoraActual()
     fechaHoraDesde = (fechaHoraActual).replace(tzinfo=None)
    
@@ -192,7 +190,7 @@ def confirmarReserva(request):
 def buscarEstadoReservado():
     for estado in Estado.objects.all():
         if estado.esAmbitoTurno():
-            if estado.getNombre() == "Reservado":
+            if estado.mostrarEstado() == "Reservado":
                 return estado
 
 def enviarMail(request):

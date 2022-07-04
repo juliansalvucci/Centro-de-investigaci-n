@@ -53,7 +53,7 @@ class CentroInvestigacion(models.Model):
 
     #En diagrama es validar cientifico, luego cambiar en diagrama.
     def getCientifico(self, cientifico):
-        return self.asignacionCientifico.mostrarCientificoDeCi(cientifico)
+        return self.asignacionCientifico.mostrarCientificoDelCI(cientifico)
 
 #ASIGNACIÓNCIENTÍFICO
 class AsignacionCientificoDelCI(models.Model):
@@ -61,7 +61,7 @@ class AsignacionCientificoDelCI(models.Model):
     fechaHasta = models.DateField(blank=True, null=True)
     personalCientifico = models.ManyToManyField("PersonalCientifico")
 
-    def mostrarCientificoDeCi(self, cientifico):
+    def mostrarCientificoDelCI(self, cientifico):
         if self.personalCientifico.filter(legajo=cientifico):
             return True
         else:
@@ -133,7 +133,7 @@ class Estado(models.Model):
         if self.ambito == "Turno":
            return True
 
-    def getNombre(self):
+    def mostrarEstado(self):
         return self.nombre
 
     def esReservable(self):
@@ -210,7 +210,7 @@ class Turno(models.Model):
 
     def crearNuevoCambioEstadoTurno(self,fechaHoraDesde, estado):
         cambioEstadoTurno = CambioEstadoTurno.objects.create()
-        cambioEstadoTurno.new(fechaHoraDesde, estado)
+        cambioEstadoTurno.crear(fechaHoraDesde, estado)
         cambioEstadoTurno.save()
         self.cambioEstadoTurno.add(cambioEstadoTurno)
         self.save()
@@ -223,7 +223,7 @@ class CambioEstadoTurno(models.Model):
     estado = models.ForeignKey("Estado", on_delete=models.CASCADE,blank=True, null=True)
 
     def getEstado(self):
-        return self.estado.getNombre()
+        return self.estado.mostrarEstado()
     
     def esReservable(self):
         return self.estado.esReservable()
@@ -231,6 +231,6 @@ class CambioEstadoTurno(models.Model):
     def setEstado(self, estado):
         self.estado = estado
 
-    def new(self, fechaHoraDesde, estado):
+    def crear(self, fechaHoraDesde, estado):
         self.fechaHoraDesde = fechaHoraDesde
         self.setEstado(estado)
