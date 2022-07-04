@@ -15,12 +15,12 @@ USTED ELIGIÓ UN TURNO
         <form action="../confirmarReserva/" method="POST">
             {% csrf_token %}
 
-            <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{tipoRecursoTecnologicoSeleccionado}}" readonly="true" name="tipoRecursoTecnologicoSeleccionado">
-            <label for="cientificoLogueado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{cientificoLogueado}}" readonly="true" name="cientificoLogueado">
+            <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly" hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{tipoRecursoTecnologicoSeleccionado}}" readonly="true" name="tipoRecursoTecnologicoSeleccionado" hidden="true">
+            <label for="cientificoLogueado" class="label-readonly" hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{cientificoLogueado}}" readonly="true" name="cientificoLogueado" hidden="true">
 
-            <label for="recursoTecnologicoSeleccionado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{recursoTecnologicoSeleccionado}}" readonly="true" name="recursoTecnologicoSeleccionado">
+            <label for="recursoTecnologicoSeleccionado" class="label-readonly" hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{recursoTecnologicoSeleccionado}}" readonly="true" name="recursoTecnologicoSeleccionado" hidden="true">
 
-            <label for="turnoSeleccionado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{turnoSeleccionado}}" readonly="true" name="turnoSeleccionado">
+            <label for="turnoSeleccionado" class="label-readonly" hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{turnoSeleccionado}}" readonly="true" name="turnoSeleccionado" hidden="true">
         
             <div>
                 <label>Notificación mail</label>

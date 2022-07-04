@@ -15,17 +15,50 @@
         <form action="../tomarSeleccionTurno/" method="POST">
             {% csrf_token %}
 
-            <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{tipoRecursoTecnologicoSeleccionado}}" readonly="true" name="tipoRecursoTecnologicoSeleccionado">
-            <label for="cientificoLogueado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{cientificoLogueado}}" readonly="true" name="cientificoLogueado">
+            <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly" hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{tipoRecursoTecnologicoSeleccionado}}" readonly="true" name="tipoRecursoTecnologicoSeleccionado"  hidden="true">
+            <label for="cientificoLogueado" class="label-readonly"  hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{cientificoLogueado}}" readonly="true" name="cientificoLogueado"  hidden="true">
 
-            <label for="recursoTecnologicoSeleccionado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{recursoTecnologicoSeleccionado}}" readonly="true" name="recursoTecnologicoSeleccionado">
-            <label for="cientificoLogueado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{cientificoLogueado}}" readonly="true" name="cientificoLogueado">
-            <label for="turnoSeleccionado" class="label-readonly mt-2">Recurso:</label>
-            <select name="turnoSeleccionado" class="form-select mt-1 mb-4" required>
+            <label for="recursoTecnologicoSeleccionado" class="label-readonly"  hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{recursoTecnologicoSeleccionado}}" readonly="true" name="recursoTecnologicoSeleccionado"  hidden="true">
+            <label for="cientificoLogueado" class="label-readonly"  hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{cientificoLogueado}}" readonly="true" name="cientificoLogueado"  hidden="true">
+            
+                <label for="turnoSeleccionado" class="label-readonly mt-2" hidden="true">Recurso:</label>
+            <select name="turnoSeleccionado" class="form-select mt-1 mb-4" required hidden="true">
                 {% for turnoDeRecursoTecnologico in turnosDeRecursoTecnologico %}
                 <option value="{{turnoDeRecursoTecnologico.diaSemana}}">{{turnoDeRecursoTecnologico.estado}}</option>
                 {% endfor %}
             </select>
+
+        
+            
+
+            <table class="table mt-3">
+                <thead>
+                    <th ></th>
+                    <th class="col">Exposición</th>
+                </thead>
+                <tbody>
+                    {% for turnoDeRecursoTecnologico in turnosDeRecursoTecnologico %}
+                    {% if turnoDeRecursoTecnologico.estado == 'Disponible' %}
+                    <tr style="background-color: blue; color: white;">
+                        <td><input type="radio" name="recursoTecnologicoSeleccionado" value="{{recursoTecnologico.numeroInventario}}"></td>
+                        <td>{{turnoDeRecursoTecnologico.fechaGeneracion}}</td>
+                        <td>{{turnoDeRecursoTecnologico.diaSemana}}</td>
+                        <td>{{turnoDeRecursoTecnologico.fechaHoraInicio}}</td>
+                        <td>{{turnoDeRecursoTecnologico.fechaHoraFin}}</td>
+                        <td>{{turnoDeRecursoTecnologico.estado}}</td>
+                    {% elif turnoDeRecursoTecnologico.estado == 'Reservado' %}
+                    <tr style="background-color: rgb(255, 0, 0); color: white;">
+                        <td><input type="radio" disabled="true" name="recursoTecnologicoSeleccionado" value="{{recursoTecnologico.numeroInventario}}"></td>
+                        <td>{{turnoDeRecursoTecnologico.fechaGeneracion}}</td>
+                        <td>{{turnoDeRecursoTecnologico.diaSemana}}</td>
+                        <td>{{turnoDeRecursoTecnologico.fechaHoraInicio}}</td>
+                        <td>{{turnoDeRecursoTecnologico.fechaHoraFin}}</td>
+                        <td>{{turnoDeRecursoTecnologico.estado}}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
         
             <div class="submit-container">
                 <input type="submit" value="Seleccionar" class="btn btn-primary mb-2">
