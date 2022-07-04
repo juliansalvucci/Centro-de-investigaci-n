@@ -49,6 +49,7 @@
 </div>
 
 <script src="{% static 'fullcalendar/lib/main.js' %}"></script>
+<script src="{% static 'fullcalendar/lib/locales-all.js' %}"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function(){
@@ -59,11 +60,12 @@
                     {
                         title: "{{ turnoDeRecursoTecnologico.estado }}",
                         start: "{{ turnoDeRecursoTecnologico.fechaHoraInicio|date:'Y-m-d' }}",
-                        end:   "{{ turnoDeRecursoTecnologico.fechaHoraFin|date:'Y-m-d' }}"
+                        end:   "{{ turnoDeRecursoTecnologico.fechaHoraFin|date:'Y-m-d' }}",
                     },
                 {% endfor %}
             ]
         });
         calendar.render()
+        calendar.setOption('locale', 'es');
     });
 </script>

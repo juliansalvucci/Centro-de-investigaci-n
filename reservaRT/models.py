@@ -94,7 +94,6 @@ class RecursoTecnologico(models.Model):
     def esReservable(self):
         if(self.fechaBaja == None):
             return True
-        #return self.cambioEstadoRecursoTecnologico.esReservable()
 
     def validarCientifico(self, cientifico):
         return self.centroInvestigacion.getCientifico(cientifico)
@@ -103,7 +102,6 @@ class RecursoTecnologico(models.Model):
         turnos = []
         for turno in self.turno.all():
             turnos.append(turno)
-                
         return turnos
 
     def getCentroInvestigacion(self):
