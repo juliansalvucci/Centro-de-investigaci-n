@@ -208,7 +208,7 @@ class Turno(models.Model):
 
     def crearNuevoCambioEstadoTurno(self,fechaHoraDesde, estado):
         cambioEstadoTurno = CambioEstadoTurno.objects.create()
-        cambioEstadoTurno.crear(fechaHoraDesde, estado)
+        cambioEstadoTurno.new(fechaHoraDesde, estado)
         cambioEstadoTurno.save()
         self.cambioEstadoTurno.add(cambioEstadoTurno)
         self.save()
@@ -217,7 +217,7 @@ class Turno(models.Model):
 #CAMBIOESTADOTURNO
 class CambioEstadoTurno(models.Model):
     fechaHoraDesde = models.DateTimeField(blank=True, null=True)
-    fechaHoraHasta = models.DateTimeField(blank=True, null=True)
+    fechaHoraHasta = models.DateTimeField(blank=True, null=True) #setera la fecha y hora hasta que el turno cambie de estado
     estado = models.ForeignKey("Estado", on_delete=models.CASCADE,blank=True, null=True)
 
     def getEstado(self):
@@ -229,6 +229,6 @@ class CambioEstadoTurno(models.Model):
     def setEstado(self, estado):
         self.estado = estado
 
-    def crear(self, fechaHoraDesde, estado):
+    def new(self, fechaHoraDesde, estado):
         self.fechaHoraDesde = fechaHoraDesde
         self.setEstado(estado)

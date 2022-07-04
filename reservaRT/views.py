@@ -130,8 +130,8 @@ def mostrarTurnosDeRecursoTecnologico(request):
 def getFechaHoraActual():
     return datetime.now()
 
-def getTurnosDeRecursoTecnologico(recursoTecnologicoSeeccionado):
-    turnos = recursoTecnologicoSeeccionado.getTurnos()
+def getTurnosDeRecursoTecnologico(recursoTecnologicoSeleccionado):
+    turnos = recursoTecnologicoSeleccionado.getTurnos()
     turnosParaSeleccion = []
     fechaHoraActual = getFechaHoraActual()
     for turno in turnos:
@@ -170,7 +170,7 @@ def confirmarReserva(request):
     cientificoLogueado = request.POST['cientificoLogueado']
     turnoSeleccionado = request.POST['turnoSeleccionado']
    
-    print(recursoTecnologicoSeleccionado)
+    print(turnoSeleccionado)
 
     turno = Turno.objects.get(diaSemana=turnoSeleccionado)
     #recursoTecnologico = RecursoTecnologico.objects.get(numeroRT=recursoTecnologicoSeleccionado)
@@ -179,12 +179,14 @@ def confirmarReserva(request):
     mail = request.POST.get('confirmacionMail','off')
 
     whatsapp = request.POST.get('confirmacionWhatsapp','off')
+
     estado = buscarEstadoReservado()
 
+   
     fechaHoraActual = getFechaHoraActual()
     fechaHoraDesde = (fechaHoraActual).replace(tzinfo=None)
    
-    turno.crearNuevoCambioEstadoTurno(fechaHoraDesde,estado)
+    turno = turno.crearNuevoCambioEstadoTurno(fechaHoraDesde,estado)
 
     
     if mail == 'on':
@@ -215,7 +217,7 @@ def enviarMail(request):
         tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
         turnoSeleccionado = request.POST['turnoSeleccionado']
         turno = Turno.objects.get(diaSemana=turnoSeleccionado)
-        mensaje = 'Se ha confirmado la reserva del turno '
+        mensaje = 'Se ha confirmado la reserva del turno. '
 
         template = render_to_string('Paso8.html', {
             'mensaje': mensaje,
@@ -225,7 +227,7 @@ def enviarMail(request):
             mensaje,
             template,
             settings.EMAIL_HOST_USER,
-            ['julianls783@gmail.com']
+            ['fran_m_9@hotmail.com']
         )
 
         email.fail_silently = False
@@ -234,12 +236,12 @@ def enviarMail(request):
 
 def enviarWP(request):
      if request.method == 'POST':
-       webbrowser.open('https://web.whatsapp.com/send?phone=+543535648757')
+       webbrowser.open('https://web.whatsapp.com/send?phone=+543534225008')
 
        sleep(5)
   
        for i in range(2):
-         pyautogui.typewrite('Hola')
+         pyautogui.typewrite('Se ha confirmado la reserva del turno.')
          pyautogui.press('enter')
 
     
