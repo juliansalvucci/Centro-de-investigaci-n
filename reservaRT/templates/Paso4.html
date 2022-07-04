@@ -7,78 +7,81 @@
 />
 <link rel="stylesheet" href="{% static 'fullcalendar/lib/main.css' %}">
 
-<h1>SELECCIONE UN TURNO</h1>
-<div class="container ">
-    <p>Paso 4 de 11</p>
-    <hr>
-    <div class="row">
-        <form action="../tomarSeleccionTurno/" method="POST">
-            {% csrf_token %}
-
-            <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly" hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{tipoRecursoTecnologicoSeleccionado}}" readonly="true" name="tipoRecursoTecnologicoSeleccionado"  hidden="true">
-            <label for="cientificoLogueado" class="label-readonly"  hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{cientificoLogueado}}" readonly="true" name="cientificoLogueado"  hidden="true">
-
-            <label for="recursoTecnologicoSeleccionado" class="label-readonly"  hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{recursoTecnologicoSeleccionado}}" readonly="true" name="recursoTecnologicoSeleccionado"  hidden="true">
-            <label for="cientificoLogueado" class="label-readonly"  hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{cientificoLogueado}}" readonly="true" name="cientificoLogueado"  hidden="true">
-            
-                <label for="turnoSeleccionado" class="label-readonly mt-2" hidden="true">Recurso:</label>
-            <select name="turnoSeleccionado" class="form-select mt-1 mb-4" required hidden="true">
-                {% for turnoDeRecursoTecnologico in turnosDeRecursoTecnologico %}
-                <option value="{{turnoDeRecursoTecnologico.diaSemana}}">{{turnoDeRecursoTecnologico.estado}}</option>
-                {% endfor %}
-            </select>
-
+<div class="container" style="padding: 20px">
+    <head>
+        <h1>Seleccione un Turno</h1>
+        <p>Paso 4 de 11</p>
+        <hr>
+    </head>
+    <body>
         
-            
-
-            <table class="table mt-3">
-                <thead>
-                    <th ></th>
-                    <th class="col">Exposición</th>
-                </thead>
-                <tbody>
+        <div class="row">
+            <form action="../tomarSeleccionTurno/" method="POST">
+                {% csrf_token %}
+        
+                <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly" hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{tipoRecursoTecnologicoSeleccionado}}" readonly="true" name="tipoRecursoTecnologicoSeleccionado"  hidden="true">
+                <label for="cientificoLogueado" class="label-readonly"  hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{cientificoLogueado}}" readonly="true" name="cientificoLogueado"  hidden="true">
+        
+                <label for="recursoTecnologicoSeleccionado" class="label-readonly"  hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{recursoTecnologicoSeleccionado}}" readonly="true" name="recursoTecnologicoSeleccionado"  hidden="true">
+                <label for="cientificoLogueado" class="label-readonly"  hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{cientificoLogueado}}" readonly="true" name="cientificoLogueado"  hidden="true">
+                
+                    <label for="turnoSeleccionado" class="label-readonly mt-2" hidden="true">Recurso:</label>
+                <select name="turnoSeleccionado" class="form-select mt-1 mb-4" required hidden="true">
                     {% for turnoDeRecursoTecnologico in turnosDeRecursoTecnologico %}
-                    {% if turnoDeRecursoTecnologico.estado == 'Disponible' %}
-                    <tr style="background-color: blue; color: white;">
-                        <td><input type="radio" name="recursoTecnologicoSeleccionado" value="{{recursoTecnologico.numeroInventario}}"></td>
-                        <td>{{turnoDeRecursoTecnologico.fechaGeneracion}}</td>
-                        <td>{{turnoDeRecursoTecnologico.diaSemana}}</td>
-                        <td>{{turnoDeRecursoTecnologico.fechaHoraInicio}}</td>
-                        <td>{{turnoDeRecursoTecnologico.fechaHoraFin}}</td>
-                        <td>{{turnoDeRecursoTecnologico.estado}}</td>
-                    {% elif turnoDeRecursoTecnologico.estado == 'Reservado' %}
-                    <tr style="background-color: rgb(255, 0, 0); color: white;">
-                        <td><input type="radio" disabled="true" name="recursoTecnologicoSeleccionado" value="{{recursoTecnologico.numeroInventario}}"></td>
-                        <td>{{turnoDeRecursoTecnologico.fechaGeneracion}}</td>
-                        <td>{{turnoDeRecursoTecnologico.diaSemana}}</td>
-                        <td>{{turnoDeRecursoTecnologico.fechaHoraInicio}}</td>
-                        <td>{{turnoDeRecursoTecnologico.fechaHoraFin}}</td>
-                        <td>{{turnoDeRecursoTecnologico.estado}}</td>
-                    </tr>
-                    {% endif %}
+                    <option value="{{turnoDeRecursoTecnologico.diaSemana}}">{{turnoDeRecursoTecnologico.estado}}</option>
                     {% endfor %}
-                </tbody>
-            </table>
+                </select>
         
-            <div class="submit-container">
-                <input type="submit" value="Seleccionar" class="btn btn-primary mb-2">
-            </div>
-        </form>
-    </div>
-    <div class="card">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-md-8">
-                    <strong class="card-title">Turnos</strong>
-    
+            
+                
+        
+                <table class="table mt-3">
+                    <thead>
+                        <th ></th>
+                        <th class="col">Exposición</th>
+                    </thead>
+                    <tbody>
+                        {% for turnoDeRecursoTecnologico in turnosDeRecursoTecnologico %}
+                        {% if turnoDeRecursoTecnologico.estado == 'Disponible' %}
+                        <tr style="background-color: #3788d8; color: white;">
+                            <td><input type="radio" name="recursoTecnologicoSeleccionado" value="{{recursoTecnologico.numeroInventario}}"></td>
+                            <td>{{turnoDeRecursoTecnologico.fechaGeneracion}}</td>
+                            <td>{{turnoDeRecursoTecnologico.diaSemana}}</td>
+                            <td>{{turnoDeRecursoTecnologico.fechaHoraInicio}}</td>
+                            <td>{{turnoDeRecursoTecnologico.fechaHoraFin}}</td>
+                            <td>{{turnoDeRecursoTecnologico.estado}}</td>
+                        {% elif turnoDeRecursoTecnologico.estado == 'Reservado' %}
+                        <tr style="background-color: #dc3545; color: white;">
+                            <td><input type="radio" disabled="true" name="recursoTecnologicoSeleccionado" value="{{recursoTecnologico.numeroInventario}}"></td>
+                            <td>{{turnoDeRecursoTecnologico.fechaGeneracion}}</td>
+                            <td>{{turnoDeRecursoTecnologico.diaSemana}}</td>
+                            <td>{{turnoDeRecursoTecnologico.fechaHoraInicio}}</td>
+                            <td>{{turnoDeRecursoTecnologico.fechaHoraFin}}</td>
+                            <td>{{turnoDeRecursoTecnologico.estado}}</td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            
+                <div class="submit-container">
+                    <input type="submit" value="Seleccionar" class="btn btn-primary mb-2">
+                </div>
+            </form>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-8">
+                        <strong class="card-title">Turnos</strong>
+        
+                    </div>
                 </div>
             </div>
-        </div>
-    <div id="calendar" class="card" style="padding: 20px">
-
-    </div> 
-
-    
+        <div id="calendar" class="card" style="padding: 20px">
+        
+        </div> 
+    </body>
 </div>
 
 <script src="{% static 'fullcalendar/lib/main.js' %}"></script>

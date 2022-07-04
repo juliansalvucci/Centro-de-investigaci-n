@@ -1,8 +1,23 @@
+{% load static %}
 
-{{recursoTecnologicoSeleccionado}}
-<br>
-{{turnoSeleccionado}}
-<br>
-{{tipoRecursoTecnologicoSeleccionado}}
-<br>
-{{msg}}
+<link 
+    rel="stylesheet"
+    type="text/css"
+    href="{% static 'CentroDeInvestigacion/css/bootstrap.css' %}"
+/>
+<div class="container" style="padding: 20px">
+    <div class="alert alert-warning" role="alert">
+        <p>{{recursoTecnologicoSeleccionado}}</p>
+        <br>
+        <p>{{turnoSeleccionado}}</p>
+        <br>
+        <p>{{tipoRecursoTecnologicoSeleccionado}}</p>
+        <br>
+        <span>{{msg}}</span>
+    </div>
+</div>
+
+
+
+
+

@@ -1,1 +1,12 @@
-{{error}}
+{% load static %}
+
+<link 
+    rel="stylesheet"
+    type="text/css"
+    href="{% static 'CentroDeInvestigacion/css/bootstrap.css' %}"
+/>
+<div class="container" style="padding: 20px">
+    <div class="alert alert-danger" role="alert">
+        {{error}}
+    </div>
+</div>

@@ -5,30 +5,31 @@
     type="text/css"
     href="{% static 'CentroDeInvestigacion/css/bootstrap.css' %}"
 />
-
-<h1>SELECCIONE UN TIPO DE RECURSO TECNOLÓGICO</h1>
-<div class="container ">
-    <p>Paso 3 de 11</p>
-    <hr>
-    <div class="row">
-        <form action="../mostrarTurnosDeRecursoTecnologico/" method="POST">
-            {% csrf_token %}
-
-            <label for="recursoTecnologicoSeleccionado" class="label-readonly mt-2" hidden="true">Recurso:</label>
-            <!--Hacer invisible al logueado-->
-            <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly" hidden="true">científico logueado: </label>
-            <input type="text" class="input-readonly" value="{{tipoRecursoTecnologicoSeleccionado}}" readonly="true" name="tipoRecursoTecnologicoSeleccionado" hidden="true">
-            <input name="recursoTecnologicoSeleccionado" value="{{recursoTecnologicoSeleccionado}}" class="form-select mt-1 mb-4" hidden="true">
-            <label for="cientificoLogueado" class="label-readonly" hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{cientificoLogueado}}" readonly="true" name="cientificoLogueado" hidden="true">
-
-            <H1>Recurso ubicado en su centro de investigación ¿Desea continuar?</H1>
- 
-            
+<div class="container" style="padding: 20px">
+    <head>
+        <h1>Seleccione un Tipo de Recurso Tecnológico</h1>
+        <p>Paso 3 de 11</p>
+        <hr>
+    </head>
+    <body>
+        <div class="row">
+            <form action="../mostrarTurnosDeRecursoTecnologico/" method="POST">
+                {% csrf_token %}
         
-            <div class="submit-container">
-                <button><a href="http://127.0.0.1:8000/">Cancelar</a></button>
-                <input type="submit" value="Seleccionar" class="btn btn-primary mb-2">
-            </div>
-        </form>
-    </div>
+                <label for="recursoTecnologicoSeleccionado" class="label-readonly mt-2" hidden="true">Recurso:</label>
+                <!--Hacer invisible al logueado-->
+                <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly" hidden="true">Científico Logueado: </label>
+                <input type="text" class="input-readonly" value="{{tipoRecursoTecnologicoSeleccionado}}" readonly="true" name="tipoRecursoTecnologicoSeleccionado" hidden="true">
+                <input name="recursoTecnologicoSeleccionado" value="{{recursoTecnologicoSeleccionado}}" class="form-select mt-1 mb-4" hidden="true">
+                <label for="cientificoLogueado" class="label-readonly" hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{cientificoLogueado}}" readonly="true" name="cientificoLogueado" hidden="true">
+        
+                <span>Recurso ubicado en su centro de investigación ¿Desea continuar?</span>
+            
+                <div class="submit-container" style="padding: 10px">
+                    <input class="btn btn-primary" type="submit" value="Seleccionar">
+                    <a class="btn btn-danger" href="http://127.0.0.1:8000/" role="button">Cancelar</a>
+                </div>
+            </form>
+        </div>    
+    </body>
 </div>

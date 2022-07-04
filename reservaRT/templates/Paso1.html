@@ -6,25 +6,29 @@
     href="{% static 'CentroDeInvestigacion/css/bootstrap.css' %}"
 />
 
-<h1>SELECCIONE UN TIPO DE RECURSO TECNOLÓGICO</h1>
-<div class="container ">
-    <p>Paso 1 de 11</p>
-    <hr>
-    <div class="row">
-        <form action="../tomarSeleccionTipoRecursoTecnologico/" method="POST">
-            {% csrf_token %}
-
-            <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly mt-2">Tipo Recurso Tecnológico:</label>
-            <select name="tipoRecursoTecnologicoSeleccionado" class="form-select mt-1 mb-4" required>
-                {% for tipoRecursoTecnologico in tiposRecursosTecnologicos %}
-                <option value="{{tipoRecursoTecnologico}}">{{tipoRecursoTecnologico}}</option>
-                {% endfor %}
-            </select>
+<div class="container" style="padding: 20px">
+    <head>
+        <h1>Seleccione un Tipo de Recurso Tecnológico</h1>
+        <span>Paso 1 de 11</span>
+        <hr>
+    </head>
+    <body>
+        <div class="row">
+            <form action="../tomarSeleccionTipoRecursoTecnologico/" method="POST">
+                {% csrf_token %}
         
-            <div class="submit-container">
-                <input type="submit" value="Seleccionar" class="btn btn-primary mb-2">
-            </div>
-        </form>
-    </div>
+                <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly mt-2">Tipo Recurso Tecnológico:</label>
+                <select name="tipoRecursoTecnologicoSeleccionado" class="form-select mt-1 mb-4" required>
+                    {% for tipoRecursoTecnologico in tiposRecursosTecnologicos %}
+                    <option value="{{tipoRecursoTecnologico}}">{{tipoRecursoTecnologico}}</option>
+                    {% endfor %}
+                </select>
+            
+                <div class="submit-container">
+                    <input type="submit" value="Seleccionar" class="btn btn-primary mb-2">
+                </div>
+            </form>
+        </div>
+    </body>
 </div>
 
