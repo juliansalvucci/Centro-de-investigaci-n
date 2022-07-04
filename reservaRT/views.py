@@ -148,15 +148,15 @@ def getTurnosDeRecursoTecnologico(recursoTecnologicoSeeccionado):
     return turnosParaSeleccion
     
 def tomarSeleccionTurno(request):
-    recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
     tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
+    recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
     cientificoLogueado = request.POST['cientificoLogueado']
     turnoSeleccionado = request.POST['turnoSeleccionado']
 
     context = {
         'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
-        'turnoSeleccionado': turnoSeleccionado,
         'recursoTecnologicoSeleccionado': recursoTecnologicoSeleccionado,
+        'turnoSeleccionado': turnoSeleccionado,
         'cientificoLogueado': cientificoLogueado,
         'turnoSeleccionado': turnoSeleccionado,
     }
@@ -165,8 +165,8 @@ def tomarSeleccionTurno(request):
 
 
 def confirmarReserva(request):
-    recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
     tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
+    recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
     cientificoLogueado = request.POST['cientificoLogueado']
     turnoSeleccionado = request.POST['turnoSeleccionado']
    
@@ -176,9 +176,9 @@ def confirmarReserva(request):
     #recursoTecnologico = RecursoTecnologico.objects.get(numeroRT=recursoTecnologicoSeleccionado)
 
     
-    mail = request.POST['confirmacionMail']
+    mail = request.POST.get('confirmacionMail','off')
 
-    whatsapp = request.POST['confirmacionWhatsapp']
+    whatsapp = request.POST.get('confirmacionWhatsapp','off')
     estado = buscarEstadoReservado()
 
     fechaHoraActual = getFechaHoraActual()
@@ -186,19 +186,19 @@ def confirmarReserva(request):
    
     turno.crearNuevoCambioEstadoTurno(fechaHoraDesde,estado)
 
-    '''''
+    
     if mail == 'on':
         enviarMail(request)
 
     if whatsapp == 'on':
-        enviarWP()
-    '''
+        enviarWP(request)
+    
 
     context ={
        'recursoTecnologicoSeleccionado': recursoTecnologicoSeleccionado,
        'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
        'turno': turno,
-       'recursoTecnologico': recursoTecnologico,
+       #'recursoTecnologico': recursoTecnologico,
        'cientificoLogueado': cientificoLogueado,
        'msg': 'reservaConfirmada'
     }
@@ -213,21 +213,16 @@ def buscarEstadoReservado():
 def enviarMail(request):
     if request.method == 'POST':
         tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
-        recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
         turnoSeleccionado = request.POST['turnoSeleccionado']
         turno = Turno.objects.get(diaSemana=turnoSeleccionado)
-        recursoTecnologico = RecursoTecnologico.objects.get(numeroRT=recursoTecnologicoSeleccionado)
+        mensaje = 'Se ha confirmado la reserva del turno '
 
         template = render_to_string('Paso8.html', {
-            'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
-            'recursoTecnologico': recursoTecnologico,
-            'turno': turno,
+            'mensaje': mensaje,
         })
 
         email = EmailMessage(
-            tipoRecursoTecnologicoSeleccionado,
-            recursoTecnologico,
-            turno,
+            mensaje,
             template,
             settings.EMAIL_HOST_USER,
             ['julianls783@gmail.com']
@@ -237,12 +232,14 @@ def enviarMail(request):
         email.send()
 
 
-def enviarWP():
-    webbrowser.open('https://web.whatsapp.com/send?phone=+543535648757')
+def enviarWP(request):
+     if request.method == 'POST':
+       webbrowser.open('https://web.whatsapp.com/send?phone=+543533501557')
 
-    sleep(5)
-
-    pyautogui.typewrite('Reserva de turno confirmada con éxito')
-    pyautogui.press('enter')
+       sleep(5)
+  
+       for i in range(1):
+         pyautogui.typewrite('Reserva de turno confirmada con éxito')
+         pyautogui.press('enter')
 
     
