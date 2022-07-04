@@ -43,16 +43,24 @@
                     <tbody>
                         {% for recursoTecnologico in recursosTecnologicos %}
                         {% if recursoTecnologico.estado == 'disponible' %}
-                        <tr style="background-color: blue; color: white;">
-                            <td><input type="radio" name="recursoTecnologicoSeleccionado" value="{{recursoTecnologico.numeroInventario}}" required style="background-color: blue; "></td>
+                        <tr style="background-color: #3788d8; color: white;">
+                            <td>
+                                <div class="form-check">
+                                <input class="form-check-input" type="radio" name="recursoTecnologicoSeleccionado" value="{{recursoTecnologico.numeroInventario}}">
+                              </div>
+                            </td>
                             <td>{{recursoTecnologico.numeroInventario}}</td>
                             <td>{{recursoTecnologico.modelo}}</td>
                             <td>{{recursoTecnologico.marca}}</td>
                             <td>{{recursoTecnologico.centroInvestigacion}}</td>
                             <td>{{recursoTecnologico.estado}}</td>
                         {% elif recursoTecnologico.estado == 'enMantenimiento' %}
-                        <tr style="background-color: green; color: white;">
-                            <td><input type="radio" name="recursoTecnologicoSeleccionado" value="{{recursoTecnologico.numeroInventario}}"></td>
+                        <tr style="background-color: #28a745; color: white;">
+                            <td>
+                                <div class="form-check">
+                                <input class="form-check-input" type="radio" name="recursoTecnologicoSeleccionado" value="{{recursoTecnologico.numeroInventario}}">
+                              </div>
+                            </td>
                             <td>{{recursoTecnologico.numeroInventario}}</td>
                             <td>{{recursoTecnologico.modelo}}</td>
                             <td>{{recursoTecnologico.marca}}</td>
@@ -60,8 +68,12 @@
                             <td>{{recursoTecnologico.estado}}</td>
                         </tr>
                         {% elif recursoTecnologico.estado ==  'enMantenimientoCorrectivo' %}
-                        <tr style="background-color: rgb(130, 130, 130); color: white;">
-                            <td><input type="radio" name="recursoTecnologicoSeleccionado" value="{{recursoTecnologico.numeroInventario}}"></td>
+                        <tr style="background-color: #6c757d; color: white;">
+                            <td>
+                                <div class="form-check">
+                                <input class="form-check-input" type="radio" name="recursoTecnologicoSeleccionado" value="{{recursoTecnologico.numeroInventario}}">
+                              </div>
+                            </td>
                             <td>{{recursoTecnologico.numeroInventario}}</td>
                             <td>{{recursoTecnologico.modelo}}</td>
                             <td>{{recursoTecnologico.marca}}</td>
