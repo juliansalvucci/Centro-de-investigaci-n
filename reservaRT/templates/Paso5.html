@@ -12,7 +12,7 @@ USTED ELIGIÓ UN TURNO
     <p>Paso 4 de 11</p>
     <hr>
     <div class="row">
-        <form action="../confirmarReserva/" method="POST">
+        <form action="../confirmarReserva/" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
             <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly" hidden="true">Responsable logueado: </label><input type="text" class="input-readonly" value="{{tipoRecursoTecnologicoSeleccionado}}" readonly="true" name="tipoRecursoTecnologicoSeleccionado" hidden="true">

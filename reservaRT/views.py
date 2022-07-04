@@ -227,8 +227,7 @@ def enviarWP():
 
     sleep(5)
 
-    for i in range(5):
-        pyautogui.typewrite('Reserva de turno confirmada con éxito')
-        pyautogui.press('enter')
+    pyautogui.typewrite('Reserva de turno confirmada con éxito')
+    pyautogui.press('enter')
 
     
