@@ -234,12 +234,12 @@ def enviarMail(request):
 
 def enviarWP(request):
      if request.method == 'POST':
-       webbrowser.open('https://web.whatsapp.com/send?phone=+543533501557')
+       webbrowser.open('https://web.whatsapp.com/send?phone=+543535648757')
 
        sleep(5)
   
-       for i in range(1):
-         pyautogui.typewrite('Reserva de turno confirmada con éxito')
+       for i in range(2):
+         pyautogui.typewrite('Hola')
          pyautogui.press('enter')
 
     
