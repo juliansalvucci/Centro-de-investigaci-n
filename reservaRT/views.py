@@ -169,10 +169,16 @@ def confirmarReserva(request):
     tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
     cientificoLogueado = request.POST['cientificoLogueado']
     turnoSeleccionado = request.POST['turnoSeleccionado']
+   
+    print(recursoTecnologicoSeleccionado)
+
+    turno = Turno.objects.get(diaSemana=turnoSeleccionado)
+    #recursoTecnologico = RecursoTecnologico.objects.get(numeroRT=recursoTecnologicoSeleccionado)
+
+    
     mail = request.POST['confirmacionMail']
 
     whatsapp = request.POST['confirmacionWhatsapp']
-    turno = Turno.objects.get(diaSemana=turnoSeleccionado)
     estado = buscarEstadoReservado()
 
     fechaHoraActual = getFechaHoraActual()
@@ -180,17 +186,19 @@ def confirmarReserva(request):
    
     turno.crearNuevoCambioEstadoTurno(fechaHoraDesde,estado)
 
+    '''''
     if mail == 'on':
         enviarMail(request)
 
     if whatsapp == 'on':
         enviarWP()
-
+    '''
 
     context ={
-       'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
-       'turnoSeleccionado': turnoSeleccionado,
        'recursoTecnologicoSeleccionado': recursoTecnologicoSeleccionado,
+       'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
+       'turno': turno,
+       'recursoTecnologico': recursoTecnologico,
        'cientificoLogueado': cientificoLogueado,
        'msg': 'reservaConfirmada'
     }
@@ -204,18 +212,25 @@ def buscarEstadoReservado():
 
 def enviarMail(request):
     if request.method == 'POST':
-        RecursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
-        axel = '¡¡MALOOOOOO!!'
+        tipoRecursoTecnologicoSeleccionado = request.POST['tipoRecursoTecnologicoSeleccionado']
+        recursoTecnologicoSeleccionado = request.POST['recursoTecnologicoSeleccionado']
+        turnoSeleccionado = request.POST['turnoSeleccionado']
+        turno = Turno.objects.get(diaSemana=turnoSeleccionado)
+        recursoTecnologico = RecursoTecnologico.objects.get(numeroRT=recursoTecnologicoSeleccionado)
 
         template = render_to_string('Paso8.html', {
-            'axel': axel,
+            'tipoRecursoTecnologicoSeleccionado': tipoRecursoTecnologicoSeleccionado,
+            'recursoTecnologico': recursoTecnologico,
+            'turno': turno,
         })
 
         email = EmailMessage(
-            axel,
+            tipoRecursoTecnologicoSeleccionado,
+            recursoTecnologico,
+            turno,
             template,
             settings.EMAIL_HOST_USER,
-            ['julian.-taborda@hotmail.com']
+            ['julianls783@gmail.com']
         )
 
         email.fail_silently = False

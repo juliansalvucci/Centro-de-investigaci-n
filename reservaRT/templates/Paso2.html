@@ -18,9 +18,10 @@
             <form action="../tomarSeleccionRecursoTecnologico/" method="POST">
                 {% csrf_token %}
                 <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly" type="hidden"></label><input type="hidden" class="input-readonly" value="{{tipoRecursoTecnologicoSeleccionado}}" readonly="true" name="tipoRecursoTecnologicoSeleccionado">
+                
                 <!--
-                    <label for="recursoTecnologicoSeleccionado" class="label-readonly mt-2">Recurso Tecnológico:</label>
-                <select name="recursoTecnologicoSeleccionado" class="form-select mt-1 mb-4" required>
+                <label for="recursoTecnologicoSeleccionado" class="label-readonly mt-2" hidden="true">Recurso Tecnológico:</label>
+                <select name="recursoTecnologicoSeleccionado" class="form-select mt-1 mb-4" required hidden="true">
                     {% for recursoTecnologico in recursosTecnologicos %}
                     {% if recursoTecnologico.estado == 'disponible' %}
                     <option value="{{recursoTecnologico.numeroInventario}}" style="background-color: blue; color:white">{{recursoTecnologico.numeroInventario}} - {{recursoTecnologico.modelo}} - {{recursoTecnologico.marca}} - {{centroInvestigacion}}</option>
@@ -33,8 +34,11 @@
                     {% endif %}
                     {% endfor %}
                 </select>
-        
+
                 -->
+            
+        
+                
                 
                 <table class="table mt-3">
                     <thead>
