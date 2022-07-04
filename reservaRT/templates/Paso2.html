@@ -12,8 +12,9 @@
     <div class="row">
         <form action="../tomarSeleccionRecursoTecnologico/" method="POST">
             {% csrf_token %}
-            <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly">Responsable logueado: </label><input type="text" class="input-readonly" value="{{tipoRecursoTecnologicoSeleccionado}}" readonly="true" name="tipoRecursoTecnologicoSeleccionado">
-            <label for="recursoTecnologicoSeleccionado" class="label-readonly mt-2">Recurso Tecnológico:</label>
+            <label for="tipoRecursoTecnologicoSeleccionado" class="label-readonly" type="hidden"></label><input type="hidden" class="input-readonly" value="{{tipoRecursoTecnologicoSeleccionado}}" readonly="true" name="tipoRecursoTecnologicoSeleccionado">
+            <!--
+                <label for="recursoTecnologicoSeleccionado" class="label-readonly mt-2">Recurso Tecnológico:</label>
             <select name="recursoTecnologicoSeleccionado" class="form-select mt-1 mb-4" required>
                 {% for recursoTecnologico in recursosTecnologicos %}
                 {% if recursoTecnologico.estado == 'disponible' %}
@@ -27,6 +28,46 @@
                 {% endif %}
                 {% endfor %}
             </select>
+
+            -->
+            
+            <table class="table mt-3">
+                <thead>
+                    <th ></th>
+                    <th class="col">Exposición</th>
+                </thead>
+                <tbody>
+                    {% for recursoTecnologico in recursosTecnologicos %}
+                    {% if recursoTecnologico.estado == 'disponible' %}
+                    <tr style="background-color: blue; color: white;">
+                        <td><input type="radio" name="recursoTecnologicoSeleccionado" value="{{recursoTecnologico.numeroInventario}}" required style="background-color: blue; "></td>
+                        <td>{{recursoTecnologico.numeroInventario}}</td>
+                        <td>{{recursoTecnologico.modelo}}</td>
+                        <td>{{recursoTecnologico.marca}}</td>
+                        <td>{{recursoTecnologico.centroInvestigacion}}</td>
+                        <td>{{recursoTecnologico.estado}}</td>
+                    {% elif recursoTecnologico.estado == 'enMantenimiento' %}
+                    <tr style="background-color: green; color: white;">
+                        <td><input type="radio" name="recursoTecnologicoSeleccionado" value="{{recursoTecnologico.numeroInventario}}"></td>
+                        <td>{{recursoTecnologico.numeroInventario}}</td>
+                        <td>{{recursoTecnologico.modelo}}</td>
+                        <td>{{recursoTecnologico.marca}}</td>
+                        <td>{{recursoTecnologico.centroInvestigacion}}</td>
+                        <td>{{recursoTecnologico.estado}}</td>
+                    </tr>
+                    {% elif recursoTecnologico.estado ==  'enMantenimientoCorrectivo' %}
+                    <tr style="background-color: rgb(130, 130, 130); color: white;">
+                        <td><input type="radio" name="recursoTecnologicoSeleccionado" value="{{recursoTecnologico.numeroInventario}}"></td>
+                        <td>{{recursoTecnologico.numeroInventario}}</td>
+                        <td>{{recursoTecnologico.modelo}}</td>
+                        <td>{{recursoTecnologico.marca}}</td>
+                        <td>{{recursoTecnologico.centroInvestigacion}}</td>
+                        <td>{{recursoTecnologico.estado}}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
         
             <div class="submit-container">
                 <input type="submit" value="Seleccionar" class="btn btn-primary mb-2">
